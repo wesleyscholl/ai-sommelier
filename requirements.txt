@@ -5,3 +5,4 @@ sentence-transformers
 openai
 streamlit
 pytest
+tqdm
