@@ -2,7 +2,7 @@ pandas
 scikit-learn
 numpy
 sentence-transformers
-openai
+google-generativeai
 streamlit
 pytest
 tqdm
