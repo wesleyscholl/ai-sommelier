@@ -7,16 +7,16 @@ from .recommender import Recommender
 class Sommelier:
     """
     Uses a Recommender to find wines and Gemini to generate natural explanations.
-    Falls back to template if GEMINI_API_KEY is not set.
+    Falls back to template if GOOGLE_API_KEY is not set.
     """
 
     def __init__(self, recommender: Recommender, gemini_model: str = "gemini-1.5-flash"):
         self.recommender = recommender
         self.gemini_model = gemini_model
-        self.GEMINI_api_key = os.environ.get("GEMINI_API_KEY")
+        self.google_api_key = os.environ.get("GOOGLE_API_KEY")
         self.gemini = None
-        if self.GEMINI_api_key:
-            genai.configure(api_key=self.GEMINI_api_key)
+        if self.google_api_key:
+            genai.configure(api_key=self.google_api_key)
             self.gemini = genai.GenerativeModel(self.gemini_model)
 
     def _format_candidates(self, df):
@@ -38,7 +38,7 @@ class Sommelier:
         self, user_text: str, candidates: List[Dict], max_tokens: int = 300
     ) -> str:
         """
-        If GEMINI_API_KEY is present, ask Gemini for explanations.
+        If GOOGLE_API_KEY is present, ask Gemini for explanations.
         Otherwise, fallback to templates.
         """
         if self.gemini:

@@ -2,7 +2,7 @@
 
 An AI-powered wine recommendation system that helps customers find the perfect bottle based on taste preferences, grape varietals, food and cheese pairings, or mood.
 
-## AI Wine Sommelier: Technical Overview
+## Technical Overview
 
 The AI Wine Sommelier application leverages several state-of-the-art artificial intelligence technologies to provide intelligent wine recommendations based on natural language descriptions and preferences. This application demonstrates the practical application of modern NLP (Natural Language Processing) techniques to create a sophisticated recommendation system accessible through an intuitive interface.
 

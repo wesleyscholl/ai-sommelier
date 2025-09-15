@@ -44,27 +44,96 @@ def build_recommender(data_path: str, embed_file: str = None):
             status_text.text("Embeddings loaded successfully!")
         except Exception:
             status_text.text("Failed to load embeddings, computing new ones...")
-            progress_bar.progress(30)
             
-            # Simulate progress during embedding computation
-            # This creates the appearance of progress while embeddings are computed
-            status_text.text("Computing embeddings (this may take a while)...")
-            for i in range(30, 90, 10):
-                progress_bar.progress(i)
-                time.sleep(0.5)  # Small delay for visual feedback
+            # Create animated progress bar during computation
+            import threading
+            import itertools
+            
+            # Set up animation flag and function
+            computing = True
+            
+            def animate_progress():
+                """Animates progress bar while computing is True"""
+                min_val, max_val = 30, 90
+                step = 5
+                direction = 1  # 1 for increasing, -1 for decreasing
+                current = min_val
                 
-            rec.fit(df_local)
+                while computing:
+                    # Update progress bar with current value
+                    progress_bar.progress(current)
+                    
+                    # Change direction if at boundaries
+                    if current >= max_val:
+                        direction = -1
+                    elif current <= min_val:
+                        direction = 1
+                        
+                    # Move progress in current direction
+                    current += step * direction
+                    time.sleep(0.3)  # Controls animation speed
+            
+            # Start animation in a separate thread
+            status_text.text("Computing embeddings (this may take a while)...")
+            animation_thread = threading.Thread(target=animate_progress)
+            animation_thread.daemon = True  # Thread will exit when main thread exits
+            animation_thread.start()
+            
+            # Compute embeddings
+            try:
+                rec.fit(df_local)
+            finally:
+                # Stop animation
+                computing = False
+                animation_thread.join(timeout=1.0)
+                
+            # Show completion
             progress_bar.progress(100)
             status_text.text("Embeddings computed successfully!")
     else:
         status_text.text("Computing embeddings (this may take a while)...")
         
-        # Simulate progress during embedding computation
-        for i in range(0, 90, 10):
-            progress_bar.progress(i)
-            time.sleep(0.5)  # Small delay for visual feedback
+        # Create animated progress bar during computation
+        import threading
+        
+        # Set up animation flag and function
+        computing = True
+        
+        def animate_progress():
+            """Animates progress bar while computing is True"""
+            min_val, max_val = 10, 90
+            step = 5
+            direction = 1  # 1 for increasing, -1 for decreasing
+            current = min_val
             
-        rec.fit(df_local)
+            while computing:
+                # Update progress bar with current value
+                progress_bar.progress(current)
+                
+                # Change direction if at boundaries
+                if current >= max_val:
+                    direction = -1
+                elif current <= min_val:
+                    direction = 1
+                    
+                # Move progress in current direction
+                current += step * direction
+                time.sleep(0.3)  # Controls animation speed
+        
+        # Start animation in a separate thread
+        animation_thread = threading.Thread(target=animate_progress)
+        animation_thread.daemon = True
+        animation_thread.start()
+        
+        # Compute embeddings
+        try:
+            rec.fit(df_local)
+        finally:
+            # Stop animation
+            computing = False
+            animation_thread.join(timeout=1.0)
+            
+        # Show completion
         progress_bar.progress(100)
         status_text.text("Embeddings computed successfully!")
     
