@@ -75,15 +75,43 @@ class ProductionRecommender(Recommender):
         if progress_callback:
             progress_callback(0.9, "Building search index...")
         
-        from sklearn.neighbors import NearestNeighbors
-        self.nn = NearestNeighbors(n_neighbors=min(10, len(self.df)), metric="cosine", algorithm="auto")
-        self.nn.fit(self.embeddings)
+        try:
+            from sklearn.neighbors import NearestNeighbors
+            self.nn = NearestNeighbors(n_neighbors=min(10, len(self.df)), metric="cosine", algorithm="auto")
+            self.nn.fit(self.embeddings)
+        except ImportError:
+            # If sklearn not available, use a simple fallback
+            if progress_callback:
+                progress_callback(0.9, "Using fallback similarity search...")
+            self.nn = None
         
         if progress_callback:
             progress_callback(1.0, "Ready!")
 
 st.title("🤵🏻‍♂️🍷 AI Wine Sommelier")
 st.markdown("*Find your perfect wine with AI-powered recommendations*")
+
+# Add custom CSS for dark wine theme
+st.markdown("""
+<style>
+    .stApp {
+        background: linear-gradient(135deg, #2D1B3D 0%, #1E1E1E 100%);
+    }
+    .wine-card {
+        background: rgba(212, 175, 55, 0.1);
+        border-left: 4px solid #D4AF37;
+        padding: 1rem;
+        margin: 0.5rem 0;
+        border-radius: 8px;
+    }
+    .metric-container {
+        background: rgba(45, 27, 61, 0.7);
+        padding: 0.5rem;
+        border-radius: 6px;
+        margin: 0.2rem;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 # Smart configuration with production defaults
 with st.sidebar:
@@ -154,8 +182,13 @@ def build_recommender(data_path: str, embed_file: str = None, batch_size: int = 
         
         update_progress(0.2, f"Dataset ready: {len(df_local):,} wines")
         
-        # Initialize recommender
-        rec = ProductionRecommender()
+        # Initialize recommender with fallback
+        try:
+            rec = ProductionRecommender()
+        except Exception as e:
+            # Fallback to original Recommender if ProductionRecommender fails
+            rec = Recommender()
+            update_progress(0.2, "Using standard recommender...")
         
         # Try loading cached embeddings
         if embed_file and os.path.exists(embed_file):
@@ -220,7 +253,8 @@ st.header("🍷 What wine are you looking for?")
 user_text = st.text_input(
     "Describe your perfect wine or food pairing:",
     placeholder="e.g., a medium-bodied red for steak dinner under $30",
-    value="a medium-bodied red to go with steak, under $30"
+    value="a medium-bodied red to go with steak, under $30",
+    key="wine_query"
 )
 
 # Filters in columns for better layout
@@ -235,7 +269,8 @@ with col3:
 variety_input = st.text_input(
     "Preferred varieties (optional):",
     placeholder="e.g., Cabernet Sauvignon, Pinot Noir",
-    help="Leave blank for all varieties, or specify comma-separated grape types"
+    help="Leave blank for all varieties, or specify comma-separated grape types",
+    key="variety_input"
 )
 
 # Recommendation button and results
@@ -244,7 +279,11 @@ if st.button("🔍 Find My Wine", type="primary"):
         st.error("Please describe what wine you're looking for.")
     else:
         with st.spinner("🍷 Finding your perfect wines..."):
-            variety_list = [v.strip() for v in variety_input.split(",") if v.strip()] or None
+            # Clean variety input - only use if actually provided
+            variety_list = None
+            if variety_input and variety_input.strip():
+                variety_list = [v.strip() for v in variety_input.split(",") if v.strip()]
+            
             price_min = float(budget_min) if budget_min > 0 else None
             price_max = float(budget_max) if budget_max > 0 else None
             
@@ -257,32 +296,46 @@ if st.button("🔍 Find My Wine", type="primary"):
                     variety=variety_list,
                 )
                 
+                # Debug info in sidebar
+                with st.sidebar:
+                    st.markdown("**Debug Info:**")
+                    st.write(f"Query: {user_text}")
+                    st.write(f"Price range: ${price_min or 0} - ${price_max or '∞'}")
+                    st.write(f"Varieties: {variety_list or 'All'}")
+                    st.write(f"Results found: {len(res.get('candidates', []))}")
+                
                 # Display recommendations with enhanced formatting
                 st.markdown("## 🎯 Your Wine Recommendations")
                 
                 if not res["candidates"]:
                     st.warning("No wines found matching your criteria. Try adjusting your filters or description.")
+                    st.info("💡 **Tips:** Try broader terms, remove variety filters, or increase price range")
                 else:
                     for i, wine in enumerate(res["candidates"], 1):
-                        with st.container():
-                            # Wine title and basic info
+                        # Use custom styling for wine cards
+                        wine_html = f"""
+                        <div class="wine-card">
+                            <h4>🍷 {i}. {wine['title']}</h4>
+                        </div>
+                        """
+                        st.markdown(wine_html, unsafe_allow_html=True)
+                        
+                        col1, col2, col3 = st.columns([2, 1, 1])
+                        with col1:
+                            st.write(f"**{wine['variety']}** from {wine.get('country', 'Unknown')}")
+                        with col2:
                             price_str = f"${wine.get('price', '?')}" if wine.get('price') else "Price not available"
-                            st.markdown(f"### {i}. **{wine['title']}**")
-                            
-                            col1, col2, col3 = st.columns([2, 1, 1])
-                            with col1:
-                                st.write(f"**{wine['variety']}** from {wine.get('country', 'Unknown')}")
-                            with col2:
-                                st.write(f"💰 {price_str}")
-                            with col3:
-                                similarity = wine.get('similarity', 0)
-                                st.write(f"🎯 {similarity:.1%} match")
-                            
-                            # Description
-                            if wine.get('description'):
-                                st.write(wine['description'][:200] + "..." if len(wine['description']) > 200 else wine['description'])
-                            
-                            st.markdown("---")
+                            st.markdown(f"<div class='metric-container'>💰 {price_str}</div>", unsafe_allow_html=True)
+                        with col3:
+                            similarity = wine.get('similarity', 0)
+                            st.markdown(f"<div class='metric-container'>🎯 {similarity:.1%} match</div>", unsafe_allow_html=True)
+                        
+                        # Description
+                        if wine.get('description'):
+                            desc = wine['description'][:200] + "..." if len(wine['description']) > 200 else wine['description']
+                            st.write(f"*{desc}*")
+                        
+                        st.markdown("---")
                 
                 # Sommelier explanation
                 if res["explanation"]:
@@ -304,29 +357,30 @@ with st.sidebar:
         st.info("💡 Set GOOGLE_API_KEY for AI explanations")
     
     st.markdown("""
-    **Features:**
+    **🍷 Features:**
     - 🧠 AI-powered semantic search
-    - 🍷 130K+ wine database
-    - 💰 Price filtering
-    - 🍇 Variety filtering
+    - 📊 130K+ wine database  
+    - 💰 Smart price filtering
+    - 🍇 Flexible variety matching
     - 🤖 AI sommelier explanations
     
-    **Tips:**
-    - Be specific in your description
+    **💡 Tips:**
+    - Be specific in descriptions
     - Mention food pairings
-    - Include price preferences
+    - Include price preferences  
     - Try different varieties
     """)
     
     # Quick examples
-    st.markdown("**Quick Examples:**")
+    st.markdown("**✨ Quick Examples:**")
     examples = [
         "Bold red for BBQ under $25",
-        "Crisp white for seafood",
+        "Crisp white for seafood", 
         "Elegant wine for special dinner",
         "Sweet wine for dessert"
     ]
     
-    for example in examples:
-        if st.button(f"'{example}'", key=f"example_{hash(example)}"):
-            st.experimental_set_query_params(query=example)
+    for i, example in enumerate(examples):
+        if st.button(f"Try: '{example}'", key=f"example_{i}"):
+            st.session_state.wine_query = example
+            st.rerun()

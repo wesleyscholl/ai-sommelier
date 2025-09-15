@@ -4,10 +4,11 @@ port = 8501
 enableCORS = false
 
 [theme]
-primaryColor = "#8B0000"
-backgroundColor = "#FFFFFF"
-secondaryBackgroundColor = "#F5F5F5"
-textColor = "#262730"
+primaryColor = "#D4AF37"
+backgroundColor = "#1E1E1E"
+secondaryBackgroundColor = "#2D1B3D"
+textColor = "#F5F5DC"
+base = "dark"
 
 [client]
 showErrorDetails = false

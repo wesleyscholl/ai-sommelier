@@ -159,13 +159,14 @@ class Recommender:
             res = res[res["price"].notna() & (res["price"] >= price_min)]
         if price_max is not None:
             res = res[res["price"].notna() & (res["price"] <= price_max)]
-        if variety:
-            # More flexible variety matching
-            variety_patterns = [v.strip().lower() for v in variety]
-            mask = res["variety"].fillna("").str.lower().apply(
-                lambda x: any(pattern in x for pattern in variety_patterns)
-            )
-            res = res[mask]
+        if variety and len(variety) > 0:
+            # More flexible variety matching - check if any variety pattern matches
+            variety_patterns = [v.strip().lower() for v in variety if v.strip()]
+            if variety_patterns:  # Only filter if we have actual variety patterns
+                mask = res["variety"].fillna("").str.lower().apply(
+                    lambda x: any(pattern in x or x in pattern for pattern in variety_patterns)
+                )
+                res = res[mask]
 
         # Sort by similarity and return top results
         res = res.sort_values("_similarity", ascending=False).head(top_k)
