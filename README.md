@@ -72,6 +72,43 @@ The architecture supports several avenues for AI advancement:
 This application demonstrates how multiple AI technologies can be integrated to create a practical, user-friendly application that brings expert-level wine knowledge to everyone through natural language interaction.
 
 
+## Performance Optimization Guide
+
+The embedding process can be resource-intensive, especially with large datasets. Here are tips for optimizing performance:
+
+### For Faster Development/Testing
+- **Use Data Sampling**: Enable the "Use data sample" option in the sidebar to work with a smaller subset of wines.
+- **Adjust Sample Size**: Use the slider to find a balance between coverage and speed (1000-2000 wines is usually sufficient for testing).
+- **Pre-compute Embeddings**: Generate embeddings offline and save them to a file:
+  ```python
+  from src.recommender import Recommender
+  from src.utils import load_wine_dataset
+  
+  # Load data
+  df = load_wine_dataset("data/wine_reviews.csv")
+  
+  # Create and fit recommender
+  rec = Recommender()
+  rec.fit(df)
+  
+  # Save embeddings for faster loading
+  rec.save_embeddings("data/embeddings.npz")
+  ```
+
+### For Memory Optimization
+- **Adjust Batch Size**: Lower the batch size slider in the sidebar if you encounter memory issues.
+- **Recommended Settings**:
+  - 8-16: For very limited memory environments (e.g., shared hosting)
+  - 32: Good balance for most deployments
+  - 64-128: For environments with ample memory
+
+### Troubleshooting
+If the app crashes during embedding computation:
+1. Try using a smaller data sample
+2. Reduce the batch size
+3. Check for SSL certificate issues if deployed on Streamlit Cloud
+4. Pre-compute embeddings locally and upload them to your deployment
+
 ## LLM Setup (optional)
 To enable natural-language explanations from Gemini:
 
