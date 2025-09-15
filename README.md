@@ -1,7 +1,6 @@
 # AI Wine Sommelier 🤵🏻‍♂️🍷
 
-An AI-powered wine recommendation system that helps customers find the perfect bottle based on taste preferences, food pairings, or mood.
-
+An AI-powered wine recommendation system that helps customers find the perfect bottle based on taste preferences, grape varietals, food and cheese pairings, or mood.
 
 ## AI Wine Sommelier: Technical Overview
 
