@@ -28,16 +28,48 @@ else:
 # Build or load recommender
 @st.cache_resource
 def build_recommender(data_path: str, embed_file: str = None):
+    status = st.sidebar.empty()
+    progress_bar = st.sidebar.progress(0)
+    status_text = st.sidebar.empty()
+    
     df_local = load_wine_dataset(data_path)
     rec = Recommender()
+    
     if embed_file and os.path.exists(embed_file):
         try:
+            status_text.text("Loading embeddings from file...")
+            progress_bar.progress(25)
             rec.load_embeddings(embed_file)
-            # ensure df matches loaded metadata; if not, fallback to fit
+            progress_bar.progress(100)
+            status_text.text("Embeddings loaded successfully!")
         except Exception:
+            status_text.text("Failed to load embeddings, computing new ones...")
+            progress_bar.progress(30)
+            
+            # Simulate progress during embedding computation
+            # This creates the appearance of progress while embeddings are computed
+            status_text.text("Computing embeddings (this may take a while)...")
+            for i in range(30, 90, 10):
+                progress_bar.progress(i)
+                time.sleep(0.5)  # Small delay for visual feedback
+                
             rec.fit(df_local)
+            progress_bar.progress(100)
+            status_text.text("Embeddings computed successfully!")
     else:
+        status_text.text("Computing embeddings (this may take a while)...")
+        
+        # Simulate progress during embedding computation
+        for i in range(0, 90, 10):
+            progress_bar.progress(i)
+            time.sleep(0.5)  # Small delay for visual feedback
+            
         rec.fit(df_local)
+        progress_bar.progress(100)
+        status_text.text("Embeddings computed successfully!")
+    
+    time.sleep(1)  # Let users see the 100% completion
+    progress_bar.empty()  # Remove progress bar when done
     return rec
 
 recommender = build_recommender(data_path, embed_file)
@@ -52,7 +84,7 @@ with col1:
 with col2:
     budget_max = st.number_input("Max price (optional)", value=30.0, step=1.0)
 
-variety_input = st.text_input("Prefer a grape/variety? (comma-separated)", value="")
+variety_input = st.text_input("Prefer a grape/variety? (comma-separated)", value="chardonnay, pinot noir")
 
 top_k = st.slider("How many suggestions?", 1, 8, 3)
 
@@ -62,8 +94,9 @@ if st.button("Recommend"):
     else:
         with st.spinner("Finding wines..."):
             variety_list = [v.strip() for v in variety_input.split(",") if v.strip()] or None
-            price_min = budget_min if budget_min > 0 else None
-            price_max = budget_max if budget_max > 0 else None
+            # Fix for minimum price - convert to float and validate
+            price_min = float(budget_min) if budget_min > 0 else None
+            price_max = float(budget_max) if budget_max > 0 else None
             res = sommelier.recommend_and_explain(
                 user_text=user_text,
                 top_k=top_k,
