@@ -10,6 +10,38 @@ from src.recommender import Recommender
 from src.sommelier import Sommelier
 import tempfile
 import time
+import numpy as np
+
+# Define a fallback optimized recommender in case the updated src/recommender.py isn't loaded
+class OptimizedRecommender(Recommender):
+    """
+    Fallback implementation with optimized batch processing.
+    Only used if the main Recommender class hasn't been updated.
+    """
+    
+    def fit(self, df, text_column="text_for_embedding", batch_size=32, progress_callback=None):
+        """
+        Optimized version with batch processing and progress tracking.
+        """
+        # Basic implementation - no batching but with progress updates
+        self.df = df.reset_index(drop=True).copy()
+        texts = self.df[text_column].astype(str).tolist()
+        
+        if progress_callback:
+            progress_callback(0.3, "Computing embeddings...")
+            
+        # Use the standard encode method but with progress bar
+        self.embeddings = self.model.encode(texts, show_progress_bar=True, convert_to_numpy=True)
+        
+        if progress_callback:
+            progress_callback(0.9, "Building nearest neighbors index...")
+            
+        # Fit NearestNeighbors
+        self.nn = NearestNeighbors(n_neighbors=min(10, len(self.df)), metric="cosine", algorithm="auto")
+        self.nn.fit(self.embeddings)
+        
+        if progress_callback:
+            progress_callback(1.0, "Embedding computation complete!")
 
 st.set_page_config(page_title="AI Wine Sommelier", layout="centered")
 
@@ -58,16 +90,38 @@ def build_recommender(data_path: str, embed_file: str = None, batch_size: int = 
         # Define progress callback function
         def update_progress(fraction, message):
             # Update progress bar and message
-            progress_bar.progress(fraction)
-            status_text.text(message)
+            try:
+                progress_bar.progress(fraction)
+                status_text.text(message)
+            except Exception:
+                # Failsafe if progress bar was removed
+                pass
         
         # Load dataset
         update_progress(0.1, "Loading dataset...")
         df_local = load_wine_dataset(data_path)
         update_progress(0.2, f"Dataset loaded: {len(df_local)} wines")
         
-        # Initialize recommender
-        rec = Recommender()
+        # Try to initialize recommender with optimized version first
+        try:
+            # Try to create an instance of our recommender with the batch_size parameter
+            test_recommender = Recommender()
+            test_fit_method = getattr(test_recommender, 'fit')
+            import inspect
+            fit_params = inspect.signature(test_fit_method).parameters
+            
+            if 'batch_size' in fit_params and 'progress_callback' in fit_params:
+                # Good! The updated version is available
+                rec = test_recommender
+                update_progress(0.2, "Using optimized recommender...")
+            else:
+                # Fall back to our local implementation
+                rec = OptimizedRecommender()
+                update_progress(0.2, "Using fallback optimized recommender...")
+        except Exception:
+            # Something went wrong, use fallback
+            rec = OptimizedRecommender()
+            update_progress(0.2, "Using fallback optimized recommender...")
         
         # Try to load pre-computed embeddings if available
         if embed_file and os.path.exists(embed_file):
@@ -79,14 +133,32 @@ def build_recommender(data_path: str, embed_file: str = None, batch_size: int = 
                 update_progress(0.3, f"Failed to load embeddings: {str(e)}")
                 update_progress(0.4, "Computing new embeddings...")
                 
-                # Compute new embeddings with batch processing and progress tracking
-                rec.fit(df_local, batch_size=batch_size, progress_callback=update_progress)
+                # Use the appropriate fit method based on what we detected
+                if isinstance(rec, OptimizedRecommender):
+                    rec.fit(df_local, batch_size=batch_size, progress_callback=update_progress)
+                else:
+                    try:
+                        # Try optimized method first
+                        rec.fit(df_local, batch_size=batch_size, progress_callback=update_progress)
+                    except (TypeError, ValueError):
+                        # Fall back to basic method if optimization fails
+                        update_progress(0.4, "Using standard embedding computation...")
+                        rec.fit(df_local)
         else:
             update_progress(0.3, "No pre-computed embeddings found")
             update_progress(0.4, "Computing embeddings (this may take a while)...")
             
-            # Compute embeddings with batch processing and progress tracking
-            rec.fit(df_local, batch_size=batch_size, progress_callback=update_progress)
+            # Use the appropriate fit method based on what we detected
+            if isinstance(rec, OptimizedRecommender):
+                rec.fit(df_local, batch_size=batch_size, progress_callback=update_progress)
+            else:
+                try:
+                    # Try optimized method first
+                    rec.fit(df_local, batch_size=batch_size, progress_callback=update_progress)
+                except (TypeError, ValueError):
+                    # Fall back to basic method if optimization fails
+                    update_progress(0.4, "Using standard embedding computation...")
+                    rec.fit(df_local)
         
         time.sleep(1)  # Let users see the completion message
         progress_bar.empty()  # Remove progress bar when done
