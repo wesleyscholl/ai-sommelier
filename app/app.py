@@ -11,9 +11,9 @@ from src.sommelier import Sommelier
 import tempfile
 import time
 
-st.set_page_config(page_title="Wine AI Sommelier", layout="centered")
+st.set_page_config(page_title="AI Wine Sommelier", layout="centered")
 
-st.title("🍷 Wine AI Sommelier (MVP)")
+st.title("🤵🏻‍♂️🍷 AI Wine Sommelier")
 
 data_path = st.sidebar.text_input("Path to wine CSV", value="data/wine_reviews.csv")
 embed_file = st.sidebar.text_input("Optional embeddings file (.npz)", value="data/embeddings.npz")
@@ -43,8 +43,8 @@ def build_recommender(data_path: str, embed_file: str = None):
 recommender = build_recommender(data_path, embed_file)
 sommelier = Sommelier(recommender)
 
-st.header("Tell me what you want")
-user_text = st.text_input("I want a wine for...", "a medium-bodied red to go with steak, under $30")
+st.header("Red, white, or something sparkling?")
+user_text = st.text_input("Describe your wine, meal or cheese to pair with...", "a medium-bodied red to go with steak, under $30")
 
 col1, col2 = st.columns(2)
 with col1:
