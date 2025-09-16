@@ -569,13 +569,8 @@ st.markdown("""
     
     /* Input Form Card Styling */
     .input-form-card {
-        background: linear-gradient(145deg, 
-            #D4AF37 0%, 
-            #F4E99B 25%, 
-            #D4AF37 50%, 
-            #F4E99B 75%, 
-            #D4AF37 100%);
-        border: 2px solid rgba(212, 175, 55, 0.3);
+        background: linear-gradient(145deg, rgba(212, 175, 55, 0.08) 0%, rgba(45, 27, 61, 0.15) 100%);
+        border: 2px solid linear-gradient(90deg, #D4AF37, #F4E99B);
         border-radius: 16px;
         padding: 2rem;
         margin: 2rem 0;
