@@ -642,7 +642,7 @@ if search_triggered:
                                             <p style="margin: 0 0 0.5rem 0; font-weight: bold;">{wine['variety']} from {country} {flag}</p>
                                             <div style="display: flex; gap: 1rem; margin-bottom: 0.5rem;">
                                                 <span style="background: rgba(45, 27, 61, 0.7); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.9rem;">
-                                                    ${wine.get('price', '?'):.2f if wine.get('price') else 'N/A'}
+                                                    💰 ${wine.get('price', '?') if wine.get('price') else 'N/A'}
                                                 </span>
                                                 <span style="background: rgba(45, 27, 61, 0.7); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.9rem;">
                                                     🎯 {wine.get('similarity', 0):.1%} match
