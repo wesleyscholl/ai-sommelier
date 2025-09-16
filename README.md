@@ -2,26 +2,26 @@
 
 An AI-powered wine recommendation system that helps customers find the perfect bottle based on taste preferences, grape varietals, food and cheese pairings, or mood.
 
-<img height="500" alt="diagram" src="https://github.com/user-attachments/assets/75012190-06c7-49d3-b09b-cdcdf76bd830" />
+#### Find Your Wine
+<img height="800" alt="Sommerlier" src="https://github.com/user-attachments/assets/65d2bf6c-8fd3-4c4a-8125-87e2dbc1f594" />
+
+#### Personalized Recommmendations
+<img width="500" alt="Results" src="https://github.com/user-attachments/assets/e37743ba-1b41-4f5c-a305-6b1964ead4a9" />
+
+#### Sommelier's Notes
+<img width="500" alt="Recommendations" src="https://github.com/user-attachments/assets/763c22d4-92e7-4d60-b3cf-33f5458cf451" />
+
+#### Quick Examples, Configuration & More
+<img height="500" alt="Quick" src="https://github.com/user-attachments/assets/b8e9cfa3-7fd8-4d45-8c5e-aac50212c44e" />
+<img height="499" alt="Configuration" src="https://github.com/user-attachments/assets/e37d64e5-4397-48e3-8662-2427329924da" />
+<img height="500" alt="Screenshot 2025-09-16 at 4 11 29 PM" src="https://github.com/user-attachments/assets/c6218a6c-3c64-44c9-a751-e51288e01152" />
+
+
 
 ## Quick Start 🚀
 
-1. **Fork this repository** to your GitHub account
+Head over to: https://ai-wine-som.streamlit.app/ and get your personalized wine recommendations.
 
-2. **Deploy on Streamlit Cloud:**
-   - Go to [share.streamlit.io](https://share.streamlit.io)
-   - Connect your GitHub account
-   - Select this repository
-   - Set main file: `app/app.py`
-   - Deploy!
-
-3. **LLM and Environment Setup (Optional):**
-   - Add `GOOGLE_API_KEY` or `GEMINI_API_KEY` for AI explanations
-   - Get key from [Google AI Studio](https://aistudio.google.com/)
-   - Export it in your shell:
-     ```bash
-     export GOOGLE_API_KEY="your_key_here"
-     ```
 
 ## Features ✨
 
@@ -74,6 +74,7 @@ Try these in the app:
 - **AI**: Google Gemini for explanations (optional)
 - **Data**: 130K+ wine reviews with smart sampling
 
+<img height="500" alt="diagram" src="https://github.com/user-attachments/assets/75012190-06c7-49d3-b09b-cdcdf76bd830" />
 
 ## Technical Overview
 
@@ -174,6 +175,26 @@ The embedding process can be resource-intensive, especially with large datasets.
   - 8-16: For very limited memory environments (e.g., shared hosting)
   - 32: Good balance for most deployments
   - 64-128: For environments with ample memory
+ 
+
+## Local Development 👨🏻‍💻
+
+1. **Fork this repository** to your GitHub account
+
+2. **Deploy on Streamlit Cloud:**
+   - Go to [share.streamlit.io](https://share.streamlit.io)
+   - Connect your GitHub account
+   - Select this repository
+   - Set main file: `app/app.py`
+   - Deploy!
+
+3. **LLM and Environment Setup (Optional):**
+   - Add `GOOGLE_API_KEY` or `GEMINI_API_KEY` for AI explanations
+   - Get key from [Google AI Studio](https://aistudio.google.com/)
+   - Export it in your shell:
+     ```bash
+     export GOOGLE_API_KEY="your_key_here"
+     ```
 
 ### Troubleshooting
 If the app crashes during embedding computation:
