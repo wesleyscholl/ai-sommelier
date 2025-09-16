@@ -515,19 +515,12 @@ st.markdown("""
         border: 1px solid rgba(212, 175, 55, 0.3) !important;
         border-radius: 8px !important;
     }
-    .st-key-about-expander {
-        background: rgba(45, 27, 61, 0.6) !important;
-        border: 1px solid rgba(212, 175, 55, 0.3) !important;
-        border-radius: 8px !important;
-    }
 </style>
 """, unsafe_allow_html=True)
 
 # Smart configuration with production defaults
 with st.sidebar:
     st.header("🍷 AI Wine Sommelier")
-
-    st.markdown("---")
 
     # Quick examples (keep visible)
     st.markdown("**✨ Quick Examples:**")
