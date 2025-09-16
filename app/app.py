@@ -127,6 +127,90 @@ st.markdown("""
         border-radius: 6px;
         margin: 0.2rem;
     }
+    
+    /* Elegant Sommelier Notes Card */
+    .sommelier-card {
+        background: linear-gradient(145deg, #2D1B3D 0%, #45274A 100%);
+        border: 2px solid #D4AF37;
+        border-radius: 16px;
+        padding: 2rem;
+        margin: 2rem 0;
+        box-shadow: 0 8px 32px rgba(212, 175, 55, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .sommelier-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #D4AF37, #F4E99B, #D4AF37);
+        animation: shimmer 3s ease-in-out infinite;
+    }
+    
+    @keyframes shimmer {
+        0%, 100% { opacity: 0.5; }
+        50% { opacity: 1; }
+    }
+    
+    .sommelier-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+    }
+    
+    .sommelier-avatar {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(145deg, #D4AF37, #F4E99B);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+    }
+    
+    .sommelier-title {
+        color: #D4AF37;
+        font-size: 1.8rem;
+        font-weight: bold;
+        margin: 0;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .sommelier-subtitle {
+        color: #E2E8F0;
+        font-size: 1rem;
+        margin: 0;
+        opacity: 0.8;
+        font-style: italic;
+    }
+    
+    .sommelier-content {
+        color: #F7FAFC;
+        line-height: 1.7;
+        font-size: 1.05rem;
+        text-align: justify;
+    }
+    
+    .sommelier-quote {
+        border-left: 4px solid #D4AF37;
+        padding-left: 1rem;
+        margin: 1rem 0;
+        font-style: italic;
+        color: #E2E8F0;
+        background: rgba(212, 175, 55, 0.05);
+        padding: 1rem;
+        border-radius: 0 8px 8px 0;
+    }
+    
     /* Custom toast styling to match wine theme */
     .stToast {
         background: linear-gradient(135deg, #2D1B3D 0%, #45274A 100%) !important;
@@ -429,6 +513,7 @@ if search_triggered:
                                                     🎯 {wine.get('similarity', 0):.1%} match
                                                 </span>
                                             </div>
+                                            {wine.get('description', '') if wine.get('description') else ''}
                                         </div>
                                     </div>
                                 </div>
@@ -470,8 +555,6 @@ if search_triggered:
                                                 </span>
                                             </div>
                                             {wine.get('description', '') if wine.get('description') else ''}
-                                            ## 🤵🏻‍♂️ Sommelier's Notes
-                                            {res["explanation"] if res["explanation"] else ""}
                                         </div>
                                     </div>
                                 </div>
@@ -481,6 +564,26 @@ if search_triggered:
                         # Add spacing between rows
                         st.markdown("<br>", unsafe_allow_html=True)
                 
+                # Sommelier explanation with elegant styling
+                if res["explanation"]:
+                    sommelier_html = f"""
+                    <div class="sommelier-card">
+                        <div class="sommelier-header">
+                            <div class="sommelier-avatar">🤵🏻‍♂️</div>
+                            <div>
+                                <h2 class="sommelier-title">Sommelier's Notes</h2>
+                                <p class="sommelier-subtitle">Expert wine pairing insights</p>
+                            </div>
+                        </div>
+                        <div class="sommelier-content">
+                            <div class="sommelier-quote">
+                                {res["explanation"]}
+                            </div>
+                        </div>
+                    </div>
+                    """
+                    st.markdown(sommelier_html, unsafe_allow_html=True)
+                    
             except Exception as e:
                 st.error(f"An error occurred while finding recommendations: {str(e)}")
 
