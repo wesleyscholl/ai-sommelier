@@ -1,0 +1,479 @@
+/* AI Wine Sommelier Custom Styles */
+
+.stApp {
+    background: linear-gradient(135deg, #2D1B3D 0%, #1E1E1E 100%);
+}
+
+.wine-card {
+    background: rgba(212, 175, 55, 0.1);
+    border-left: 4px solid #D4AF37;
+    padding: 1rem;
+    margin: 0.5rem 0;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Remove column-specific styling since we're using single column */
+.stColumn {
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.stColumn > div {
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.wine-card-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    flex: 1;
+}
+
+.wine-card-description {
+    margin-top: auto;
+    padding-top: 0.5rem;
+    font-style: italic;
+    color: #E2E8F0;
+    line-height: 1.4;
+    font-size: 0.9rem;
+}
+
+.metric-container {
+    background: rgba(45, 27, 61, 0.7);
+    padding: 0.5rem;
+    border-radius: 6px;
+    margin: 0.2rem;
+}
+
+/* Elegant Sommelier Notes Card */
+.sommelier-card {
+    background: linear-gradient(145deg, #2D1B3D 0%, #45274A 50%, #2D1B3D 100%);
+    border: 3px solid #D4AF37;
+    border-radius: 20px;
+    padding: 2.5rem;
+    margin: 3rem 0;
+    box-shadow: 
+        0 10px 40px rgba(212, 175, 55, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+.sommelier-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, 
+        #D4AF37 0%, 
+        #F4E99B 25%, 
+        #D4AF37 50%, 
+        #F4E99B 75%, 
+        #D4AF37 100%);
+    animation: shimmer 4s ease-in-out infinite;
+}
+
+.sommelier-card::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 15px;
+    pointer-events: none;
+}
+
+@keyframes shimmer {
+    0%, 100% { 
+        opacity: 0.6;
+        transform: translateX(-100%);
+    }
+    50% { 
+        opacity: 1;
+        transform: translateX(0%);
+    }
+}
+
+.sommelier-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+    position: relative;
+}
+
+.sommelier-header::after {
+    content: '✦';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #D4AF37;
+    font-size: 1rem;
+    background: linear-gradient(145deg, #2D1B3D, #45274A);
+    padding: 0 0.5rem;
+}
+
+.sommelier-avatar {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(145deg, #D4AF37, #F4E99B, #D4AF37);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    box-shadow: 
+        0 8px 25px rgba(212, 175, 55, 0.4),
+        inset 0 2px 4px rgba(255, 255, 255, 0.2);
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+}
+
+.sommelier-avatar::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #D4AF37, transparent, #D4AF37);
+    z-index: -1;
+    animation: rotate 6s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.sommelier-title {
+    color: #F4E99B !important;
+    font-size: 2.2rem;
+    font-weight: bold;
+    margin: 0;
+    text-shadow: 
+        0 2px 4px rgba(0,0,0,0.05),
+        0 0 10px rgba(212, 175, 55, 0.1);
+    background: linear-gradient(270deg, #D4AF37, #F4E99B);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.sommelier-subtitle {
+    color: #E2E8F0;
+    font-size: 1.1rem;
+    margin: 0.3rem 0 0 0;
+    opacity: 0.9;
+    font-style: italic;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+}
+
+.sommelier-content {
+    color: #F7FAFC;
+    line-height: 1.8;
+    font-size: 1.1rem;
+    text-align: justify;
+    position: relative;
+}
+
+.sommelier-quote {
+    border-left: 6px solid #D4AF37;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: #F0F4F8;
+    background: linear-gradient(135deg, 
+        rgba(212, 175, 55, 0.08) 0%, 
+        rgba(212, 175, 55, 0.03) 100%);
+    border-radius: 0 12px 12px 0;
+    position: relative;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.sommelier-quote::before {
+    content: '"';
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    font-size: 4rem;
+    color: #D4AF37;
+    opacity: 0.3;
+    font-family: serif;
+    line-height: 1;
+}
+
+.sommelier-quote::after {
+    content: '"';
+    position: absolute;
+    bottom: -20px;
+    right: 20px;
+    font-size: 4rem;
+    color: #D4AF37;
+    opacity: 0.3;
+    font-family: serif;
+    line-height: 1;
+}
+
+/* Enhanced wine text formatting */
+.wine-name {
+    color: #D4AF37 !important;
+    font-weight: bold !important;
+    font-size: 1.1em !important;
+    text-shadow: 0 1px 3px rgba(212, 175, 55, 0.4) !important;
+    background: linear-gradient(45deg, #D4AF37, #F4E99B) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+}
+
+.wine-entry {
+    margin: 1.2rem 0 !important;
+    padding: 0.8rem !important;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, rgba(45, 27, 61, 0.1) 100%) !important;
+    border-left: 3px solid rgba(212, 175, 55, 0.4) !important;
+    border-radius: 0 8px 8px 0 !important;
+    line-height: 1.6 !important;
+}
+
+.wine-number {
+    color: #F4E99B !important;
+    font-weight: bold !important;
+    font-size: 1.1em !important;
+    margin-right: 0.5rem !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Custom toast styling to match wine theme */
+.stToast {
+    background: linear-gradient(135deg, #2D1B3D 0%, #45274A 100%) !important;
+    border: 1px solid #D4AF37 !important;
+    color: #D4AF37 !important;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3) !important;
+}
+
+.stToast > div {
+    color: #FFFFFF !important;
+}
+
+.stToast [data-testid="toastContainer"] {
+    background: linear-gradient(135deg, #2D1B3D 0%, #45274A 100%) !important;
+    border: 1px solid #D4AF37 !important;
+}
+
+/* Enhanced Gold/Yellow Styling for UI Elements */
+
+/* Main title styling */
+.stApp h1 {
+    color: #D4AF37 !important;
+    text-shadow: 0 2px 8px rgba(212, 175, 55, 0.4) !important;
+    background: linear-gradient(45deg, #D4AF37, #F4E99B, #D4AF37) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    font-weight: bold !important;
+}
+
+/* Section headers styling */
+.stApp h2, .stApp h3 {
+    color: #F4E99B !important;
+    text-shadow: 0 1px 4px rgba(212, 175, 55, 0.3) !important;
+    padding-bottom: 0.5rem !important;
+}
+
+/* Sidebar header styling */
+.stSidebar h1, .stSidebar h2, .stSidebar h3 {
+    color: #D4AF37 !important;
+    text-shadow: 0 1px 3px rgba(212, 175, 55, 0.4) !important;
+}
+
+/* Primary button styling */
+.stButton > button[kind="primary"] {
+    background: linear-gradient(145deg, #D4AF37 0%, #F4E99B 50%, #D4AF37 100%) !important;
+    border: 2px solid #D4AF37 !important;
+    color: #1E1E1E !important;
+    font-weight: bold !important;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4) !important;
+    transition: all 0.3s ease !important;
+}
+
+.stButton > button[kind="primary"]:hover {
+    background: linear-gradient(145deg, #F4E99B 0%, #D4AF37 50%, #F4E99B 100%) !important;
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6) !important;
+    transform: translateY(-2px) !important;
+    color: #000000 !important;
+    transform: scale(1.05) !important;
+}
+
+/* Secondary/example buttons styling */
+.stButton > button {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(244, 233, 155, 0.1) 100%) !important;
+    border: 1px solid rgba(212, 175, 55, 0.4) !important;
+    color: #F4E99B !important;
+    transition: all 0.3s ease !important;
+}
+
+.stButton > button:hover {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.25) 0%, rgba(244, 233, 155, 0.2) 100%) !important;
+    border: 1px solid #D4AF37 !important;
+    color: #D4AF37 !important;
+    box-shadow: 0 3px 10px rgba(212, 175, 55, 0.3) !important;
+}
+
+/* Input field styling with gold outline */
+.stTextInput > div > div > input {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, rgba(45, 27, 61, 0.3) 100%) !important;
+    border: 2px solid rgba(212, 175, 55, 0.3) !important;
+    color: #F4E99B !important;
+    border-radius: 8px !important;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.stTextInput > div > div > input:focus {
+    border: 2px solid #D4AF37 !important;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.4) !important;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(45, 27, 61, 0.2) 100%) !important;
+}
+
+/* Number input styling */
+.stNumberInput input {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, rgba(45, 27, 61, 0.3) 100%) !important;
+    border: 2px solid rgba(212, 175, 55, 0.3) !important;
+    color: #F4E99B !important;
+    border-radius: 8px !important;
+}
+
+.stNumberInput input:focus {
+    border: 2px solid #D4AF37 !important;
+    box-shadow: 0 0 8px rgba(212, 175, 55, 0.4) !important;
+}
+
+/* Selectbox styling */
+[data-baseweb="select"] {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, rgba(45, 27, 61, 0.3) 100%) !important;
+    border: 2px solid rgba(212, 175, 55, 0.3) !important;
+    color: #F4E99B !important;
+    border-radius: 8px !important;
+}
+
+/* Label styling */
+.stTextInput > label, .stNumberInput > label, .stSelectbox > label {
+    color: #D4AF37 !important;
+    font-weight: 600 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Expander styling */
+.streamlit-expanderHeader {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(45, 27, 61, 0.2) 100%) !important;
+    border: 1px solid rgba(212, 175, 55, 0.3) !important;
+    color: #D4AF37 !important;
+    border-radius: 8px !important;
+}
+
+.streamlit-expanderHeader:hover {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(45, 27, 61, 0.3) 100%) !important;
+    border: 1px solid #D4AF37 !important;
+}
+
+/* Sidebar separator styling */
+.stSidebar hr {
+    border-color: rgba(212, 175, 55, 0.4) !important;
+    box-shadow: 0 1px 3px rgba(212, 175, 55, 0.2) !important;
+}
+
+/* Markdown text enhancements in sidebar */
+.stSidebar .stMarkdown p strong {
+    color: #D4AF37 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Progress bar styling */
+.stProgress > div > div > div {
+    background: linear-gradient(90deg, #D4AF37 0%, #F4E99B 50%, #D4AF37 100%) !important;
+}
+
+/* Checkbox styling */
+.stCheckbox > label > div > div {
+    border: 2px solid rgba(212, 175, 55, 0.3) !important;
+}
+
+.stCheckbox > label > div > div > div {
+    background: #D4AF37 !important;
+}
+
+/* Info/warning message styling */
+.stInfo {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(45, 27, 61, 0.2) 100%) !important;
+    border-left: 4px solid #D4AF37 !important;
+}
+
+/* Slider styling */
+.stSlider > div > div > div > div {
+    background: #D4AF37 !important;
+}
+
+.stSlider > div > div > div {
+    background: rgba(212, 175, 55, 0.3) !important;
+}
+
+/* Input Form Card Styling */
+.st-key-input-form {
+    background: linear-gradient(145deg, rgba(212, 175, 55, 0.08) 0%, rgba(45, 27, 61, 0.15) 100%);
+    border: 2px solid rgba(212, 175, 55, 0.3) !important;
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 2rem 0;
+    box-shadow: 
+        0 8px 32px rgba(212, 175, 55, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    position: relative;
+    backdrop-filter: blur(10px);
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.form-header h3 {
+    color: #D4AF37 !important;
+    font-size: 1.5rem !important;
+    margin: 0 0 0.5rem 0 !important;
+    text-shadow: 0 2px 4px rgba(212, 175, 55, 0.3) !important;
+    background: linear-gradient(45deg, #D4AF37, #F4E99B) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+}
+
+.form-header p {
+    color: #E2E8F0 !important;
+    font-style: italic !important;
+    margin: 0 !important;
+    opacity: 0.9 !important;
+}
+
+.stExpander {
+    background: rgba(45, 27, 61, 0.6) !important;
+    border: 1px solid rgba(212, 175, 55, 0.3) !important;
+    border-radius: 8px !important;
+}
