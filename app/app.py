@@ -319,7 +319,9 @@ try:
     if os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY"):
         st.toast("AI explanations enabled", icon="🤖")
     else:
-        st.info("💡 Set GOOGLE_API_KEY for AI explanations")except Exception as e:
+        st.info("💡 Set GOOGLE_API_KEY for AI explanations")
+        
+except Exception as e:
     st.sidebar.error(f"❌ Initialization failed: {str(e)}")
     st.toast("Sommelier failed to initialize", icon="❌")
     st.error("The AI sommelier could not be initialized. Please check your configuration.")
