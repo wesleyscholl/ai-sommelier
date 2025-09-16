@@ -595,7 +595,6 @@ st.markdown("""
             #F4E99B 75%, 
             #D4AF37 100%);
         border-radius: 16px 16px 0 0;
-        animation: shimmer 3s ease-in-out infinite;
     }
     
     .form-header {
