@@ -510,7 +510,7 @@ st.markdown("""
         background: rgba(212, 175, 55, 0.3) !important;
     }
 
-    .st-key-config-expander {
+    .stExpander{
         background: rgba(45, 27, 61, 0.6) !important;
         border: 1px solid rgba(212, 175, 55, 0.3) !important;
         border-radius: 8px !important;
