@@ -522,6 +522,8 @@ st.markdown("""
 with st.sidebar:
     st.header("🍷 AI Wine Sommelier")
 
+    st.markdown("---")
+
     # Quick examples (keep visible)
     st.markdown("**✨ Quick Examples:**")
     examples = [
