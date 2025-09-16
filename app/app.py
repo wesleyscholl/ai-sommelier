@@ -354,6 +354,161 @@ st.markdown("""
         background: linear-gradient(135deg, #2D1B3D 0%, #45274A 100%) !important;
         border: 1px solid #D4AF37 !important;
     }
+    
+    /* Enhanced Gold/Yellow Styling for UI Elements */
+    
+    /* Main title styling */
+    .stApp h1 {
+        color: #D4AF37 !important;
+        text-shadow: 0 2px 8px rgba(212, 175, 55, 0.4) !important;
+        background: linear-gradient(45deg, #D4AF37, #F4E99B, #D4AF37) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+        background-clip: text !important;
+        font-weight: bold !important;
+    }
+    
+    /* Section headers styling */
+    .stApp h2, .stApp h3 {
+        color: #F4E99B !important;
+        text-shadow: 0 1px 4px rgba(212, 175, 55, 0.3) !important;
+        border-bottom: 2px solid rgba(212, 175, 55, 0.3) !important;
+        padding-bottom: 0.5rem !important;
+    }
+    
+    /* Sidebar header styling */
+    .stSidebar h1, .stSidebar h2, .stSidebar h3 {
+        color: #D4AF37 !important;
+        text-shadow: 0 1px 3px rgba(212, 175, 55, 0.4) !important;
+    }
+    
+    /* Primary button styling */
+    .stButton > button[kind="primary"] {
+        background: linear-gradient(145deg, #D4AF37 0%, #F4E99B 50%, #D4AF37 100%) !important;
+        border: 2px solid #D4AF37 !important;
+        color: #1E1E1E !important;
+        font-weight: bold !important;
+        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4) !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    .stButton > button[kind="primary"]:hover {
+        background: linear-gradient(145deg, #F4E99B 0%, #D4AF37 50%, #F4E99B 100%) !important;
+        box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6) !important;
+        transform: translateY(-2px) !important;
+    }
+    
+    /* Secondary/example buttons styling */
+    .stButton > button {
+        background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(244, 233, 155, 0.1) 100%) !important;
+        border: 1px solid rgba(212, 175, 55, 0.4) !important;
+        color: #F4E99B !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    .stButton > button:hover {
+        background: linear-gradient(135deg, rgba(212, 175, 55, 0.25) 0%, rgba(244, 233, 155, 0.2) 100%) !important;
+        border: 1px solid #D4AF37 !important;
+        color: #D4AF37 !important;
+        box-shadow: 0 3px 10px rgba(212, 175, 55, 0.3) !important;
+    }
+    
+    /* Input field styling with gold outline */
+    .stTextInput > div > div > input {
+        background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, rgba(45, 27, 61, 0.3) 100%) !important;
+        border: 2px solid rgba(212, 175, 55, 0.3) !important;
+        color: #F4E99B !important;
+        border-radius: 8px !important;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    .stTextInput > div > div > input:focus {
+        border: 2px solid #D4AF37 !important;
+        box-shadow: 0 0 10px rgba(212, 175, 55, 0.4) !important;
+        background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(45, 27, 61, 0.2) 100%) !important;
+    }
+    
+    /* Number input styling */
+    .stNumberInput > div > div > input {
+        background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, rgba(45, 27, 61, 0.3) 100%) !important;
+        border: 2px solid rgba(212, 175, 55, 0.3) !important;
+        color: #F4E99B !important;
+        border-radius: 8px !important;
+    }
+    
+    .stNumberInput > div > div > input:focus {
+        border: 2px solid #D4AF37 !important;
+        box-shadow: 0 0 8px rgba(212, 175, 55, 0.4) !important;
+    }
+    
+    /* Selectbox styling */
+    .stSelectbox > div > div > select {
+        background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, rgba(45, 27, 61, 0.3) 100%) !important;
+        border: 2px solid rgba(212, 175, 55, 0.3) !important;
+        color: #F4E99B !important;
+        border-radius: 8px !important;
+    }
+    
+    /* Label styling */
+    .stTextInput > label, .stNumberInput > label, .stSelectbox > label {
+        color: #D4AF37 !important;
+        font-weight: 600 !important;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+    }
+    
+    /* Expander styling */
+    .streamlit-expanderHeader {
+        background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(45, 27, 61, 0.2) 100%) !important;
+        border: 1px solid rgba(212, 175, 55, 0.3) !important;
+        color: #D4AF37 !important;
+        border-radius: 8px !important;
+    }
+    
+    .streamlit-expanderHeader:hover {
+        background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(45, 27, 61, 0.3) 100%) !important;
+        border: 1px solid #D4AF37 !important;
+    }
+    
+    /* Sidebar separator styling */
+    .stSidebar hr {
+        border-color: rgba(212, 175, 55, 0.4) !important;
+        box-shadow: 0 1px 3px rgba(212, 175, 55, 0.2) !important;
+    }
+    
+    /* Markdown text enhancements in sidebar */
+    .stSidebar .stMarkdown p strong {
+        color: #D4AF37 !important;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+    }
+    
+    /* Progress bar styling */
+    .stProgress > div > div > div {
+        background: linear-gradient(90deg, #D4AF37 0%, #F4E99B 50%, #D4AF37 100%) !important;
+    }
+    
+    /* Checkbox styling */
+    .stCheckbox > label > div > div {
+        border: 2px solid rgba(212, 175, 55, 0.3) !important;
+    }
+    
+    .stCheckbox > label > div > div > div {
+        background: #D4AF37 !important;
+    }
+    
+    /* Info/warning message styling */
+    .stInfo {
+        background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(45, 27, 61, 0.2) 100%) !important;
+        border-left: 4px solid #D4AF37 !important;
+    }
+    
+    /* Slider styling */
+    .stSlider > div > div > div > div {
+        background: #D4AF37 !important;
+    }
+    
+    .stSlider > div > div > div {
+        background: rgba(212, 175, 55, 0.3) !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -638,7 +793,7 @@ if search_triggered:
                                             </div>
                                         </div>
                                         <div style="flex: 1; min-width: 0;">
-                                            <h4 style="margin: 0 0 0.5rem 0; color: #D4AF37;">🍷 {i+1}. {wine['title']}</h4>
+                                            <h4 style="margin: 0 0 0.5rem 0; color: #D4AF37;">{i+1}. {wine['title']}</h4>
                                             <p style="margin: 0 0 0.5rem 0; font-weight: bold;">{wine['variety']} from {country} {flag}</p>
                                             <div style="display: flex; gap: 1rem; margin-bottom: 0.5rem;">
                                                 <span style="background: rgba(45, 27, 61, 0.7); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.9rem;">
@@ -676,7 +831,7 @@ if search_triggered:
                                             </div>
                                         </div>
                                         <div style="flex: 1; min-width: 0;">
-                                            <h4 style="margin: 0 0 0.5rem 0; color: #D4AF37;">🍷 {i+2}. {wine['title']}</h4>
+                                            <h4 style="margin: 0 0 0.5rem 0; color: #D4AF37;">{i+2}. {wine['title']}</h4>
                                             <p style="margin: 0 0 0.5rem 0; font-weight: bold;">{wine['variety']} from {country} {flag}</p>
                                             <div style="display: flex; gap: 1rem; margin-bottom: 0.5rem;">
                                                 <span style="background: rgba(45, 27, 61, 0.7); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.9rem;">
