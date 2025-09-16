@@ -588,6 +588,7 @@ st.markdown("""
         left: 0;
         right: 0;
         height: 4px;
+        width: 90%;
         background: linear-gradient(90deg, 
             #D4AF37 0%, 
             #F4E99B 25%, 
