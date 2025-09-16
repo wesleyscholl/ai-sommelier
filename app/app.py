@@ -580,6 +580,11 @@ st.markdown("""
         position: relative;
         backdrop-filter: blur(10px);
     }
+
+    .input-form-card:hover {
+        background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(45, 27, 61, 0.3) 100%) !important;
+        border: 1px solid #D4AF37 !important;
+    }
     
     .form-header {
         text-align: center;
