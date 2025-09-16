@@ -570,7 +570,7 @@ st.markdown("""
     /* Input Form Card Styling */
     .input-form-card {
         background: linear-gradient(145deg, rgba(212, 175, 55, 0.08) 0%, rgba(45, 27, 61, 0.15) 100%);
-        border: 2px solid #D4AF37;
+        border: 2px solid #F4E99B;
         border-radius: 16px;
         padding: 2rem;
         margin: 2rem 0;
