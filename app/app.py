@@ -844,6 +844,7 @@ with st.container(key="input-form"):
         key="variety_input"
     )
 
+    st.write("")
     # Recommendation button and results
     search_triggered = st.button("🔍 Find My Wine", type="primary") or st.session_state.get('auto_search', False)
 
@@ -874,8 +875,6 @@ if search_triggered:
                 )
                 
                 # Display recommendations with enhanced formatting
-                st.write("")
-                st.write("")
                 st.write("")
                 st.markdown("## Your Wine Recommendations")
 
