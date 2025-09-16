@@ -372,7 +372,6 @@ st.markdown("""
     .stApp h2, .stApp h3 {
         color: #F4E99B !important;
         text-shadow: 0 1px 4px rgba(212, 175, 55, 0.3) !important;
-        border-bottom: 2px solid rgba(212, 175, 55, 0.3) !important;
         padding-bottom: 0.5rem !important;
     }
     
