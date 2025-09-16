@@ -659,7 +659,7 @@ with st.sidebar:
     with st.sidebar:
 
         # About section in collapsible expander
-        with st.expander("ℹ️  About AI Wine Sommelier", expanded=False):
+        with st.expander("ℹ️  About", expanded=False):
             
             st.markdown("""
             **🍷 Features:**
@@ -683,7 +683,8 @@ with st.sidebar:
             - No account or login required
 
             **👨🏻‍💻 Created by:**
-            *Wesley Scholl*
+            
+            - *Wesley Scholl*
             - [GitHub](https://github.com/wesleyscholl/ai-sommelier)
             - [LinkedIn](https://www.linkedin.com/in/wesleyscholl/)
             """)
