@@ -33,7 +33,7 @@ def get_country_flag(country):
 st.set_page_config(
     page_title="AI Wine Sommelier",
     page_icon="🍷",
-    layout="wide",
+    layout="centered",
     initial_sidebar_state="expanded"
 )
 
@@ -469,25 +469,18 @@ if search_triggered:
                                                     🎯 {wine.get('similarity', 0):.1%} match
                                                 </span>
                                             </div>
+                                            {wine.get('description', '') if wine.get('description') else ''}
+                                            ## 🤵🏻‍♂️ Sommelier's Notes
+                                            {res["explanation"] if res["explanation"] else ""}
                                         </div>
                                     </div>
                                 </div>
                                 """
                                 st.markdown(wine_html, unsafe_allow_html=True)
-                                
-                                # Description
-                                if wine.get('description'):
-                                    desc = wine['description'][:150] + "..." if len(wine['description']) > 150 else wine['description']
-                                    st.write(f"*{desc}*")
                         
                         # Add spacing between rows
                         st.markdown("<br>", unsafe_allow_html=True)
                 
-                # Sommelier explanation
-                if res["explanation"]:
-                    st.markdown("## 🤵🏻‍♂️ Sommelier's Notes")
-                    st.write(res["explanation"])
-                    
             except Exception as e:
                 st.error(f"An error occurred while finding recommendations: {str(e)}")
 
