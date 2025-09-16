@@ -568,7 +568,7 @@ st.markdown("""
     }
     
     /* Input Form Card Styling */
-    .input-form-card {
+    .st-key-input-form {
         background: linear-gradient(145deg, rgba(212, 175, 55, 0.08) 0%, rgba(45, 27, 61, 0.15) 100%);
         border: 2px solid rgba(212, 175, 55, 0.3) !important;
         border-radius: 16px;
@@ -807,15 +807,15 @@ except Exception as e:
     st.error("The AI sommelier could not be initialized. Please check your configuration.")
     st.stop()
 
-with st.container():
+with st.container(key="input-form"):
     # User input with better UX wrapped in elegant card
     st.markdown("""
-    <div class="input-form-card">
         <div class="form-header">
             <h3>🍷 Find Your Perfect Wine</h3>
             <p>Tell us what you're looking for and we'll find the perfect match</p>
         </div>
     """, unsafe_allow_html=True)
+    
     user_text = st.text_input(
         "Describe your perfect wine, food or cheese pairing:",
         placeholder="e.g., a medium-bodied red for steak dinner under $30",
@@ -846,9 +846,6 @@ with st.container():
 
     # Recommendation button and results
     search_triggered = st.button("🔍 Find My Wine", type="primary") or st.session_state.get('auto_search', False)
-
-    # Close the input form card
-    st.markdown("</div>", unsafe_allow_html=True)
 
 # Clear auto_search flag after using it
 if st.session_state.get('auto_search', False):
