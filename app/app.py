@@ -396,36 +396,92 @@ if search_triggered:
                     st.warning("No wines found matching your criteria. Try adjusting your filters or description.")
                     st.info("💡 **Tips:** Try broader terms, remove variety filters, or increase price range")
                 else:
-                    for i, wine in enumerate(res["candidates"], 1):
-                        # Get country flag
-                        country = wine.get('country', 'Unknown')
-                        flag = get_country_flag(country)
+                    # Display wines in 2 columns
+                    for i in range(0, len(res["candidates"]), 2):
+                        col_left, col_right = st.columns(2, gap="medium")
                         
-                        # Use custom styling for wine cards
-                        wine_html = f"""
-                        <div class="wine-card">
-                            <h4>🍷 {i}. {wine['title']}</h4>
-                        </div>
-                        """
-                        st.markdown(wine_html, unsafe_allow_html=True)
+                        # Left column wine
+                        if i < len(res["candidates"]):
+                            wine = res["candidates"][i]
+                            with col_left:
+                                country = wine.get('country', 'Unknown')
+                                flag = get_country_flag(country)
+                                
+                                # Wine card with image placeholder
+                                wine_html = f"""
+                                <div class="wine-card">
+                                    <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                                        <div style="flex-shrink: 0;">
+                                            <div style="width: 80px; height: 120px; background: linear-gradient(145deg, #4a5568, #2d3748); 
+                                                        border-radius: 8px; display: flex; align-items: center; justify-content: center; 
+                                                        border: 2px solid #D4AF37; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">
+                                                <span style="font-size: 2rem;">🍷</span>
+                                            </div>
+                                        </div>
+                                        <div style="flex: 1; min-width: 0;">
+                                            <h4 style="margin: 0 0 0.5rem 0; color: #D4AF37;">🍷 {i+1}. {wine['title']}</h4>
+                                            <p style="margin: 0 0 0.5rem 0; font-weight: bold;">{wine['variety']} from {country} {flag}</p>
+                                            <div style="display: flex; gap: 1rem; margin-bottom: 0.5rem;">
+                                                <span style="background: rgba(45, 27, 61, 0.7); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.9rem;">
+                                                    💰 ${wine.get('price', '?') if wine.get('price') else 'N/A'}
+                                                </span>
+                                                <span style="background: rgba(45, 27, 61, 0.7); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.9rem;">
+                                                    🎯 {wine.get('similarity', 0):.1%} match
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                """
+                                st.markdown(wine_html, unsafe_allow_html=True)
+                                
+                                # Description
+                                if wine.get('description'):
+                                    desc = wine['description'][:150] + "..." if len(wine['description']) > 150 else wine['description']
+                                    st.write(f"*{desc}*")
                         
-                        col1, col2, col3 = st.columns([2, 1, 1])
-                        with col1:
-                            st.write(f"**{wine['variety']}** from {country} {flag}")
-                        with col2:
-                            price_str = f"${wine.get('price', '?')}" if wine.get('price') else "Price not available"
-                            st.markdown(f"<div class='metric-container'>💰 {price_str}</div>", unsafe_allow_html=True)
-                        with col3:
-                            similarity = wine.get('similarity', 0)
-                            st.markdown(f"<div class='metric-container'>🎯 {similarity:.1%} match</div>", unsafe_allow_html=True)
+                        # Right column wine
+                        if i + 1 < len(res["candidates"]):
+                            wine = res["candidates"][i + 1]
+                            with col_right:
+                                country = wine.get('country', 'Unknown')
+                                flag = get_country_flag(country)
+                                
+                                # Wine card with image placeholder
+                                wine_html = f"""
+                                <div class="wine-card">
+                                    <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                                        <div style="flex-shrink: 0;">
+                                            <div style="width: 80px; height: 120px; background: linear-gradient(145deg, #4a5568, #2d3748); 
+                                                        border-radius: 8px; display: flex; align-items: center; justify-content: center; 
+                                                        border: 2px solid #D4AF37; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">
+                                                <span style="font-size: 2rem;">🍷</span>
+                                            </div>
+                                        </div>
+                                        <div style="flex: 1; min-width: 0;">
+                                            <h4 style="margin: 0 0 0.5rem 0; color: #D4AF37;">🍷 {i+2}. {wine['title']}</h4>
+                                            <p style="margin: 0 0 0.5rem 0; font-weight: bold;">{wine['variety']} from {country} {flag}</p>
+                                            <div style="display: flex; gap: 1rem; margin-bottom: 0.5rem;">
+                                                <span style="background: rgba(45, 27, 61, 0.7); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.9rem;">
+                                                    💰 ${wine.get('price', '?') if wine.get('price') else 'N/A'}
+                                                </span>
+                                                <span style="background: rgba(45, 27, 61, 0.7); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.9rem;">
+                                                    🎯 {wine.get('similarity', 0):.1%} match
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                """
+                                st.markdown(wine_html, unsafe_allow_html=True)
+                                
+                                # Description
+                                if wine.get('description'):
+                                    desc = wine['description'][:150] + "..." if len(wine['description']) > 150 else wine['description']
+                                    st.write(f"*{desc}*")
                         
-                        # Description
-                        if wine.get('description'):
-                            desc = wine['description']
-                            # [:200] + "..." if len(wine['description']) > 200 else wine['description']
-                            st.write(f"*{desc}*")
-                        
-                        st.markdown("---")
+                        # Add spacing between rows
+                        st.markdown("<br>", unsafe_allow_html=True)
                 
                 # Sommelier explanation
                 if res["explanation"]:
