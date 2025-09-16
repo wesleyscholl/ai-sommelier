@@ -120,66 +120,29 @@ st.markdown("""
         padding: 1rem;
         margin: 0.5rem 0;
         border-radius: 8px;
-        height: 100% !important;
-        display: flex !important;
-        flex-direction: column !important;
-        min-height: 400px !important;
-        flex: 1 !important;
-        box-sizing: border-box !important;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        min-height: 280px;
     }
     
-    /* Aggressively target ALL Streamlit column containers */
-    .stColumn,
-    .stColumn > div,
-    .stColumn > div > div,
-    .stColumn > div > div > div,
-    .stColumn > div > div > div > div {
-        height: 100% !important;
+    /* Ensure equal height cards in each row */
+    .stColumn {
         display: flex !important;
         flex-direction: column !important;
-        flex: 1 !important;
-        min-height: 400px !important;
-        box-sizing: border-box !important;
     }
     
-    /* Target the element containing wine cards specifically */
-    div[data-testid="column"] {
+    .stColumn > div {
         height: 100% !important;
         display: flex !important;
         flex-direction: column !important;
     }
     
-    div[data-testid="column"] > div {
-        height: 100% !important;
-        display: flex !important;
-        flex-direction: column !important;
-        flex: 1 !important;
-    }
-    
-    /* Force equal heights on all column content */
-    .element-container {
-        height: 100% !important;
-        display: flex !important;
-        flex-direction: column !important;
-        flex: 1 !important;
-    }
-    
-    /* Additional targeting for any missed containers */
-    .stMarkdown,
-    .stMarkdown > div {
-        height: 100% !important;
-        display: flex !important;
-        flex-direction: column !important;
-        flex: 1 !important;
-    }
-    
-    /* Make sure the wine card content fills the available space */
     .wine-card-content {
         display: flex;
         align-items: flex-start;
         gap: 1rem;
         flex: 1;
-        min-height: 200px;
     }
     
     .wine-card-description {
@@ -189,12 +152,6 @@ st.markdown("""
         color: #E2E8F0;
         line-height: 1.4;
         font-size: 0.9rem;
-        overflow-wrap: break-word;
-        word-wrap: break-word;
-        flex-shrink: 0;
-        min-height: 60px;
-        display: flex;
-        align-items: flex-end;
     }
     .metric-container {
         background: rgba(45, 27, 61, 0.7);
@@ -681,7 +638,7 @@ if search_triggered:
                                             </div>
                                         </div>
                                         <div style="flex: 1; min-width: 0;">
-                                            <h4 style="margin: 0 0 0.5rem 0; color: #D4AF37;">{i+1}. {wine['title']}</h4>
+                                            <h4 style="margin: 0 0 0.5rem 0; color: #D4AF37;">🍷 {i+1}. {wine['title']}</h4>
                                             <p style="margin: 0 0 0.5rem 0; font-weight: bold;">{wine['variety']} from {country} {flag}</p>
                                             <div style="display: flex; gap: 1rem; margin-bottom: 0.5rem;">
                                                 <span style="background: rgba(45, 27, 61, 0.7); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.9rem;">
@@ -694,7 +651,7 @@ if search_triggered:
                                         </div>
                                     </div>
                                     <div class="wine-card-description">
-                                        {wine.get('description', '')}
+                                        {wine.get('description', '')[:200]}{'...' if len(wine.get('description', '')) > 200 else ''}
                                     </div>
                                 </div>
                                 """
@@ -732,7 +689,7 @@ if search_triggered:
                                         </div>
                                     </div>
                                     <div class="wine-card-description">
-                                        {wine.get('description', '')}
+                                        {wine.get('description', '')[:200]}{'...' if len(wine.get('description', '')) > 200 else ''}
                                     </div>
                                 </div>
                                 """
