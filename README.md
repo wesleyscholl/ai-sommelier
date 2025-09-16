@@ -4,7 +4,7 @@ An AI-powered wine recommendation system that helps customers find the perfect b
 
 <img height="500" alt="diagram" src="https://github.com/user-attachments/assets/75012190-06c7-49d3-b09b-cdcdf76bd830" />
 
-## Quick Start
+## Quick Start 🚀
 
 1. **Fork this repository** to your GitHub account
 
