@@ -516,14 +516,20 @@ try:
     )
     sommelier = Sommelier(recommender)
     
-    # Simple success toasts without threading
-    st.toast("AI Sommelier ready!", icon="🤵🏻‍♂️", duration="short")
-    st.toast(f"Dataset loaded: {len(df):,} wines", icon="✅", duration=7)
-
-    # API status toast if enabled
-    if os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY"):
-        st.toast("AI explanations enabled", icon="🤖", duration="long")
-    else:
+    # Show toasts only on first load
+    if 'toasts_shown' not in st.session_state:
+        st.session_state['toasts_shown'] = True
+        
+        # Simple success toasts without threading
+        st.toast("AI Sommelier ready!", icon="🤵🏻‍♂️")
+        st.toast(f"Dataset loaded: {len(df):,} wines", icon="✅")
+        
+        # API status toast if enabled
+        if os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY"):
+            st.toast("AI explanations enabled", icon="🤖")
+    
+    # Always show API info message if no key
+    if not (os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY")):
         st.info("💡 Set GOOGLE_API_KEY for AI explanations")
         
 except Exception as e:
