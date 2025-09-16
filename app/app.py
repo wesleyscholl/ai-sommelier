@@ -153,22 +153,26 @@ with st.sidebar:
     # Quick examples (keep visible)
     st.markdown("**✨ Quick Examples:**")
     examples = [
-        "Bold red for BBQ under $25",
-        "Crisp white for seafood", 
-        "Elegant wine for special dinner",
-        "Sweet wine for dessert"
+        {"text": "Bold red for BBQ under $25", "min_price": 0.0, "max_price": 25.0, "variety": ""},
+        {"text": "Crisp white for seafood", "min_price": 0.0, "max_price": 50.0, "variety": "Sauvignon Blanc, Pinot Grigio"}, 
+        {"text": "Elegant wine for special dinner", "min_price": 30.0, "max_price": 100.0, "variety": ""},
+        {"text": "Sweet wine for dessert", "min_price": 0.0, "max_price": 40.0, "variety": "Riesling, Port"}
     ]
     
     for i, example in enumerate(examples):
-        if st.button(f"🍷 {example}", key=f"example_{i}", use_container_width=True):
-            # Force page rerun with new query
-            st.session_state['example_query'] = example
+        if st.button(f"🍷 {example['text']}", key=f"example_{i}", use_container_width=True):
+            # Set all form values and trigger auto-search
+            st.session_state['example_query'] = example['text']
+            st.session_state['auto_search'] = True
+            st.session_state['example_min_price'] = example['min_price']
+            st.session_state['example_max_price'] = example['max_price']
+            st.session_state['example_variety'] = example['variety']
             st.rerun()
 
     st.markdown("---")
     
     # Collapsed configuration section
-    with st.expander("⚙️ Configuration", expanded=False):
+    with st.expander("⚙️  Configuration", expanded=False):
         data_path = st.text_input("Wine dataset path", value="data/wine_reviews.csv")
         embed_file = st.text_input("Embeddings cache", value="data/embeddings.npz", 
                                   help="Pre-computed embeddings for faster loading")
@@ -185,7 +189,7 @@ with st.sidebar:
     with st.sidebar:
 
         # About section in collapsible expander
-        with st.expander("ℹ️ About AI Wine Sommelier", expanded=False):
+        with st.expander("ℹ️  About AI Wine Sommelier", expanded=False):
             
             st.markdown("""
             **🍷 Features:**
@@ -338,21 +342,32 @@ user_text = st.text_input(
 # Filters in columns for better layout
 col1, col2, col3 = st.columns(3)
 with col1:
-    budget_min = st.number_input("Min price ($)", value=0.0, step=5.0, min_value=0.0)
+    budget_min = st.number_input("Min price ($)", 
+                                value=st.session_state.get('example_min_price', 0.0), 
+                                step=5.0, min_value=0.0)
 with col2:
-    budget_max = st.number_input("Max price ($)", value=50.0, step=5.0, min_value=0.0)
+    budget_max = st.number_input("Max price ($)", 
+                                value=st.session_state.get('example_max_price', 50.0), 
+                                step=5.0, min_value=0.0)
 with col3:
     top_k = st.selectbox("Number of recommendations", [3, 5, 8], index=0)
 
 variety_input = st.text_input(
     "Preferred varieties (optional):",
     placeholder="e.g., Cabernet Sauvignon, Pinot Noir",
+    value=st.session_state.get('example_variety', ""),
     help="Leave blank for all varieties, or specify comma-separated grape types",
     key="variety_input"
 )
 
 # Recommendation button and results
-if st.button("🔍 Find My Wine", type="primary"):
+search_triggered = st.button("🔍 Find My Wine", type="primary") or st.session_state.get('auto_search', False)
+
+# Clear auto_search flag after using it
+if st.session_state.get('auto_search', False):
+    st.session_state['auto_search'] = False
+
+if search_triggered:
     if not user_text.strip():
         st.error("Please describe what wine you're looking for.")
     else:
@@ -419,3 +434,8 @@ if st.button("🔍 Find My Wine", type="primary"):
                     
             except Exception as e:
                 st.error(f"An error occurred while finding recommendations: {str(e)}")
+
+        # Clear example session state after search
+        for key in ['example_min_price', 'example_max_price', 'example_variety']:
+            if key in st.session_state:
+                del st.session_state[key]
