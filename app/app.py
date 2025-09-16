@@ -2,6 +2,7 @@ import streamlit as st
 import os
 import sys
 import time
+import re
 import numpy as np
 from pathlib import Path
 
@@ -11,6 +12,32 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from src.utils import load_wine_dataset
 from src.recommender import Recommender
 from src.sommelier import Sommelier
+
+def format_sommelier_text(text):
+    """Format sommelier explanation text with enhanced HTML styling."""
+    if not text:
+        return ""
+    
+    # Convert basic markdown formatting to HTML
+    formatted_text = text
+    
+    # Convert **bold** to styled spans
+    formatted_text = re.sub(r'\*\*(.*?)\*\*', r'<span class="wine-name">\1</span>', formatted_text)
+    
+    # Convert numbered lists to styled lists
+    formatted_text = re.sub(r'^(\d+)\.\s+', r'<div class="wine-entry"><span class="wine-number">\1.</span> ', formatted_text, flags=re.MULTILINE)
+    
+    # Close wine-entry divs at the end of each entry (before next number or end)
+    formatted_text = re.sub(r'(?=\n\d+\.|\n*$)', '</div>', formatted_text)
+    
+    # Clean up any double closing divs
+    formatted_text = formatted_text.replace('</div></div>', '</div>')
+    
+    # Add subtle spacing and styling
+    formatted_text = formatted_text.replace('\n\n', '<br><br>')
+    formatted_text = formatted_text.replace('\n', '<br>')
+    
+    return formatted_text
 
 # Country flag emoji mapping
 def get_country_flag(country):
@@ -340,6 +367,35 @@ st.markdown("""
         line-height: 1;
     }
     
+    /* Enhanced wine text formatting */
+    .wine-name {
+        color: #D4AF37 !important;
+        font-weight: bold !important;
+        font-size: 1.1em !important;
+        text-shadow: 0 1px 3px rgba(212, 175, 55, 0.4) !important;
+        background: linear-gradient(45deg, #D4AF37, #F4E99B) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+        background-clip: text !important;
+    }
+    
+    .wine-entry {
+        margin: 1.2rem 0 !important;
+        padding: 0.8rem !important;
+        background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, rgba(45, 27, 61, 0.1) 100%) !important;
+        border-left: 3px solid rgba(212, 175, 55, 0.4) !important;
+        border-radius: 0 8px 8px 0 !important;
+        line-height: 1.6 !important;
+    }
+    
+    .wine-number {
+        color: #F4E99B !important;
+        font-weight: bold !important;
+        font-size: 1.1em !important;
+        margin-right: 0.5rem !important;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+    }
+    
     /* Custom toast styling to match wine theme */
     .stToast {
         background: linear-gradient(135deg, #2D1B3D 0%, #45274A 100%) !important;
@@ -396,7 +452,7 @@ st.markdown("""
         box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6) !important;
         transform: translateY(-2px) !important;
         color: #000000 !important;
-        transform: scale(1.15) !important;
+        transform: scale(1.1) !important;
     }
     
     /* Secondary/example buttons styling */
@@ -862,6 +918,7 @@ if search_triggered:
                 
                 # Sommelier explanation with elegant styling
                 if res["explanation"]:
+                    formatted_explanation = format_sommelier_text(res["explanation"])
                     sommelier_html = f"""
                     <div class="sommelier-card">
                         <div class="sommelier-header">
@@ -873,7 +930,7 @@ if search_triggered:
                         </div>
                         <div class="sommelier-content">
                             <div class="sommelier-quote">
-                                {res["explanation"]}
+                                {formatted_explanation}
                             </div>
                         </div>
                     </div>
