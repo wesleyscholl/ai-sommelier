@@ -116,7 +116,7 @@ class Recommender:
         if progress_callback:
             progress_callback(0.9, "Building search index...")
         
-        n_neighbors = min(20, len(self.df))  # Increased for better recommendations
+        n_neighbors = min(100, len(self.df))  # Much larger for full dataset utilization
         self.nn = NearestNeighbors(n_neighbors=n_neighbors, metric="cosine", algorithm="auto")
         self.nn.fit(self.embeddings)
         
@@ -141,8 +141,8 @@ class Recommender:
         # Encode query
         q_emb = self.model.encode([query], convert_to_numpy=True, device='cpu')
         
-        # Get more candidates for better filtering
-        n_candidates = min(100, len(self.df))
+        # Get many more candidates for full dataset utilization
+        n_candidates = min(1000, len(self.df))  # Much larger candidate pool
         distances, indices = self.nn.kneighbors(q_emb, n_neighbors=n_candidates)
         indices = indices[0]
         distances = distances[0]

@@ -4,6 +4,7 @@ import sys
 import time
 import numpy as np
 from pathlib import Path
+import threading
 
 # Add the project root directory to Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -11,6 +12,34 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from src.utils import load_wine_dataset
 from src.recommender import Recommender
 from src.sommelier import Sommelier
+
+# Helper function for delayed toast messages
+def delayed_toast(message, icon, delay_seconds=0):
+    """Show a toast message after a specified delay."""
+    def show_toast():
+        time.sleep(delay_seconds)
+        st.toast(message, icon=icon)
+    
+    thread = threading.Thread(target=show_toast)
+    thread.daemon = True
+    thread.start()
+
+# Country flag emoji mapping
+def get_country_flag(country):
+    """Get flag emoji for wine country."""
+    flag_map = {
+        'Argentina': '🇦🇷', 'Australia': '🇦🇺', 'Austria': '🇦🇹', 'Bulgaria': '🇧🇬',
+        'Brazil': '🇧🇷', 'Canada': '🇨🇦', 'Chile': '🇨🇱', 'Croatia': '🇭🇷',
+        'Cyprus': '🇨🇾', 'Czech Republic': '🇨🇿', 'England': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'France': '🇫🇷',
+        'Georgia': '🇬🇪', 'Germany': '🇩🇪', 'Greece': '🇬🇷', 'Hungary': '🇭🇺',
+        'India': '🇮🇳', 'Israel': '🇮🇱', 'Italy': '🇮🇹', 'Lebanon': '🇱🇧',
+        'Luxembourg': '🇱🇺', 'Macedonia': '🇲🇰', 'Moldova': '🇲🇩', 'Morocco': '🇲🇦',
+        'New Zealand': '🇳🇿', 'Peru': '🇵🇪', 'Portugal': '🇵🇹', 'Romania': '🇷🇴',
+        'Serbia': '🇷🇸', 'Slovenia': '🇸🇮', 'South Africa': '🇿🇦', 'Spain': '🇪🇸',
+        'Switzerland': '🇨🇭', 'Turkey': '🇹🇷', 'Ukraine': '🇺🇦', 'Uruguay': '🇺🇾',
+        'US': '🇺🇸', 'USA': '🇺🇸', 'United States': '🇺🇸'
+    }
+    return flag_map.get(country, '🍷')  # Default wine emoji if country not found
 
 # Configure page for production
 st.set_page_config(
@@ -91,7 +120,7 @@ class ProductionRecommender(Recommender):
 st.title("🤵🏻‍♂️🍷 AI Wine Sommelier")
 st.markdown("*Find your perfect wine with AI-powered recommendations*")
 
-# Add custom CSS for dark wine theme
+# Add custom CSS for dark wine theme and toast styling
 st.markdown("""
 <style>
     .stApp {
@@ -110,26 +139,81 @@ st.markdown("""
         border-radius: 6px;
         margin: 0.2rem;
     }
+    /* Custom toast styling to match wine theme */
+    .stToast {
+        background: linear-gradient(135deg, #2D1B3D 0%, #45274A 100%) !important;
+        border: 1px solid #D4AF37 !important;
+        color: #D4AF37 !important;
+        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3) !important;
+    }
+    .stToast > div {
+        color: #FFFFFF !important;
+    }
+    .stToast [data-testid="toastContainer"] {
+        background: linear-gradient(135deg, #2D1B3D 0%, #45274A 100%) !important;
+        border: 1px solid #D4AF37 !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
 # Smart configuration with production defaults
 with st.sidebar:
-    st.header("⚙️ Configuration")
+    st.header("🍷 AI Wine Sommelier")
+
+    st.markdown("---")
+
+    # Quick examples (keep visible)
+    st.markdown("**✨ Quick Examples:**")
+    examples = [
+        "Bold red for BBQ under $25",
+        "Crisp white for seafood", 
+        "Elegant wine for special dinner",
+        "Sweet wine for dessert"
+    ]
     
-    # Data configuration
-    data_path = st.text_input("Wine dataset path", value="data/wine_reviews.csv")
-    embed_file = st.text_input("Embeddings cache", value="data/embeddings.npz", 
-                              help="Pre-computed embeddings for faster loading")
+    for i, example in enumerate(examples):
+        if st.button(f"🍷 {example}", key=f"example_{i}", use_container_width=True):
+            # Force page rerun with new query
+            st.session_state['example_query'] = example
+            st.rerun()
+
+    st.markdown("---")
     
-    # Performance settings
-    with st.expander("Performance Options"):
-        use_sample = st.checkbox("Use sample for demo", value=True, 
-                                help="Use smaller dataset for faster demo")
+    # Collapsed configuration section
+    with st.expander("⚙️ Configuration", expanded=False):
+        data_path = st.text_input("Wine dataset path", value="data/wine_reviews.csv")
+        embed_file = st.text_input("Embeddings cache", value="data/embeddings.npz", 
+                                  help="Pre-computed embeddings for faster loading")
+        
+        # Performance settings
+        use_sample = st.checkbox("Use sample for testing", value=False, 
+                                help="Enable only for testing - uses full 130K+ dataset by default")
         if use_sample:
-            sample_size = st.slider("Sample size", 500, 5000, 2000, 500)
+            sample_size = st.slider("Sample size", 500, 10000, 5000, 500)
         batch_size = st.slider("Processing batch size", 8, 32, 16, 4,
                               help="Lower = less memory, slower processing")
+
+    # Sidebar information
+    with st.sidebar:
+
+        # About section in collapsible expander
+        with st.expander("ℹ️ About AI Wine Sommelier", expanded=False):
+            
+            st.markdown("""
+            **🍷 Features:**
+            - 🧠 AI-powered semantic search
+            - 📊 Full 130K+ wine database
+            - 💰 Smart price filtering ($0-$300+)
+            - 🍇 Flexible variety matching
+            - 🤖 AI sommelier explanations
+            - 🎯 1000+ candidates per search
+            
+            **💡 Tips:**
+            - Be specific in descriptions
+            - Mention food pairings
+            - Include price preferences  
+            - Try different varieties
+            """)
 
 # Initialize data loading with error handling
 @st.cache_data
@@ -152,8 +236,6 @@ def load_dataset(path, use_sample=False, sample_size=2000):
 df = load_dataset(data_path, use_sample, sample_size if use_sample else None)
 if df is None:
     st.stop()
-
-st.sidebar.success(f"✅ Dataset loaded: {len(df):,} wines")
 
 # Build or load recommender with enhanced caching
 @st.cache_resource(show_spinner=False)
@@ -240,20 +322,28 @@ try:
         sample_size=sample_size if use_sample else None
     )
     sommelier = Sommelier(recommender)
-    st.sidebar.success("🎯 AI Sommelier ready!")
+    
+    # Staggered auto-hiding toast notifications (5 seconds each, 1 second apart)
+    st.toast("🎯 AI Sommelier ready!", icon="🎯")  # Shows immediately
+    delayed_toast(f"✅ Dataset loaded: {len(df):,} wines", "✅", 1)  # Shows after 1 second
+    
+    # API status toast (shows after 2 seconds if enabled)
+    if os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY"):
+        delayed_toast("🤖 AI explanations enabled", "🤖", 2)  # Shows after 2 seconds
+    else:
+        st.info("💡 Set GOOGLE_API_KEY for AI explanations")
+        
 except Exception as e:
     st.sidebar.error(f"❌ Initialization failed: {str(e)}")
+    st.toast("Sommelier failed to initialize", icon="❌")
     st.error("The AI sommelier could not be initialized. Please check your configuration.")
     st.stop()
-
-# Main interface
-st.header("🍷 What wine are you looking for?")
 
 # User input with better UX
 user_text = st.text_input(
     "Describe your perfect wine or food pairing:",
     placeholder="e.g., a medium-bodied red for steak dinner under $30",
-    value="a medium-bodied red to go with steak, under $30",
+    value=st.session_state.get('example_query', "a medium-bodied red to go with steak, under $30"),
     key="wine_query"
 )
 
@@ -296,22 +386,18 @@ if st.button("🔍 Find My Wine", type="primary"):
                     variety=variety_list,
                 )
                 
-                # Debug info in sidebar
-                with st.sidebar:
-                    st.markdown("**Debug Info:**")
-                    st.write(f"Query: {user_text}")
-                    st.write(f"Price range: ${price_min or 0} - ${price_max or '∞'}")
-                    st.write(f"Varieties: {variety_list or 'All'}")
-                    st.write(f"Results found: {len(res.get('candidates', []))}")
-                
                 # Display recommendations with enhanced formatting
                 st.markdown("## 🎯 Your Wine Recommendations")
-                
+
                 if not res["candidates"]:
                     st.warning("No wines found matching your criteria. Try adjusting your filters or description.")
                     st.info("💡 **Tips:** Try broader terms, remove variety filters, or increase price range")
                 else:
                     for i, wine in enumerate(res["candidates"], 1):
+                        # Get country flag
+                        country = wine.get('country', 'Unknown')
+                        flag = get_country_flag(country)
+                        
                         # Use custom styling for wine cards
                         wine_html = f"""
                         <div class="wine-card">
@@ -322,7 +408,7 @@ if st.button("🔍 Find My Wine", type="primary"):
                         
                         col1, col2, col3 = st.columns([2, 1, 1])
                         with col1:
-                            st.write(f"**{wine['variety']}** from {wine.get('country', 'Unknown')}")
+                            st.write(f"**{wine['variety']}** from {country} {flag}")
                         with col2:
                             price_str = f"${wine.get('price', '?')}" if wine.get('price') else "Price not available"
                             st.markdown(f"<div class='metric-container'>💰 {price_str}</div>", unsafe_allow_html=True)
@@ -332,7 +418,8 @@ if st.button("🔍 Find My Wine", type="primary"):
                         
                         # Description
                         if wine.get('description'):
-                            desc = wine['description'][:200] + "..." if len(wine['description']) > 200 else wine['description']
+                            desc = wine['description']
+                            # [:200] + "..." if len(wine['description']) > 200 else wine['description']
                             st.write(f"*{desc}*")
                         
                         st.markdown("---")
@@ -344,43 +431,3 @@ if st.button("🔍 Find My Wine", type="primary"):
                     
             except Exception as e:
                 st.error(f"An error occurred while finding recommendations: {str(e)}")
-
-# Sidebar information
-with st.sidebar:
-    st.markdown("---")
-    st.header("ℹ️ About")
-    
-    # API status
-    if os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY"):
-        st.success("🤖 AI explanations enabled")
-    else:
-        st.info("💡 Set GOOGLE_API_KEY for AI explanations")
-    
-    st.markdown("""
-    **🍷 Features:**
-    - 🧠 AI-powered semantic search
-    - 📊 130K+ wine database  
-    - 💰 Smart price filtering
-    - 🍇 Flexible variety matching
-    - 🤖 AI sommelier explanations
-    
-    **💡 Tips:**
-    - Be specific in descriptions
-    - Mention food pairings
-    - Include price preferences  
-    - Try different varieties
-    """)
-    
-    # Quick examples
-    st.markdown("**✨ Quick Examples:**")
-    examples = [
-        "Bold red for BBQ under $25",
-        "Crisp white for seafood", 
-        "Elegant wine for special dinner",
-        "Sweet wine for dessert"
-    ]
-    
-    for i, example in enumerate(examples):
-        if st.button(f"Try: '{example}'", key=f"example_{i}"):
-            st.session_state.wine_query = example
-            st.rerun()
