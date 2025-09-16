@@ -120,22 +120,33 @@ st.markdown("""
         padding: 1rem;
         margin: 0.5rem 0;
         border-radius: 8px;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        min-height: 280px;
+        height: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        min-height: 320px !important;
+        flex: 1 !important;
     }
     
     /* Ensure equal height cards in each row */
     .stColumn {
         display: flex !important;
         flex-direction: column !important;
+        height: 100% !important;
     }
     
     .stColumn > div {
         height: 100% !important;
         display: flex !important;
         flex-direction: column !important;
+        flex: 1 !important;
+    }
+    
+    /* Force equal heights for all nested divs */
+    .stColumn > div > div {
+        height: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        flex: 1 !important;
     }
     
     /* Make sure the wine card content fills the available space */
