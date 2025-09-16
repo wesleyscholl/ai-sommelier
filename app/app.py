@@ -566,6 +566,63 @@ st.markdown("""
     .stSlider > div > div > div {
         background: rgba(212, 175, 55, 0.3) !important;
     }
+    
+    /* Input Form Card Styling */
+    .input-form-card {
+        background: linear-gradient(145deg, rgba(212, 175, 55, 0.08) 0%, rgba(45, 27, 61, 0.15) 100%);
+        border: 2px solid rgba(212, 175, 55, 0.3);
+        border-radius: 16px;
+        padding: 2rem;
+        margin: 2rem 0;
+        box-shadow: 
+            0 8px 32px rgba(212, 175, 55, 0.15),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        position: relative;
+        backdrop-filter: blur(10px);
+    }
+    
+    .input-form-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, 
+            #D4AF37 0%, 
+            #F4E99B 25%, 
+            #D4AF37 50%, 
+            #F4E99B 75%, 
+            #D4AF37 100%);
+        border-radius: 16px 16px 0 0;
+        animation: shimmer 3s ease-in-out infinite;
+    }
+    
+    .form-header {
+        text-align: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    }
+    
+    .form-header h3 {
+        color: #D4AF37 !important;
+        font-size: 1.5rem !important;
+        margin: 0 0 0.5rem 0 !important;
+        text-shadow: 0 2px 4px rgba(212, 175, 55, 0.3) !important;
+        background: linear-gradient(45deg, #D4AF37, #F4E99B) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+        background-clip: text !important;
+    }
+    
+    .form-header p {
+        color: #E2E8F0 !important;
+        font-style: italic !important;
+        margin: 0 !important;
+        opacity: 0.9 !important;
+    }
+</style>
 
     .stExpander {
         background: rgba(45, 27, 61, 0.6) !important;
@@ -768,37 +825,49 @@ except Exception as e:
     st.error("The AI sommelier could not be initialized. Please check your configuration.")
     st.stop()
 
-# User input with better UX
-user_text = st.text_input(
-    "Describe your perfect wine or food pairing:",
-    placeholder="e.g., a medium-bodied red for steak dinner under $30",
-    value=st.session_state.get('example_query', "a medium-bodied red to go with steak, under $30"),
-    key="wine_query"
-)
+# User input with better UX wrapped in elegant card
+st.markdown("""
+<div class="input-form-card">
+    <div class="form-header">
+        <h3>🍷 Find Your Perfect Wine</h3>
+        <p>Tell us what you're looking for and we'll find the perfect match</p>
+    </div>
+""", unsafe_allow_html=True)
 
-# Filters in columns for better layout
-col1, col2, col3 = st.columns(3)
-with col1:
-    budget_min = st.number_input("Min price ($)", 
-                                value=st.session_state.get('example_min_price', 0.0), 
-                                step=5.0, min_value=0.0)
-with col2:
-    budget_max = st.number_input("Max price ($)", 
-                                value=st.session_state.get('example_max_price', 50.0), 
-                                step=5.0, min_value=0.0)
-with col3:
-    top_k = st.selectbox("Number of recommendations", [3, 5, 8], index=0)
+with st.container():
+    user_text = st.text_input(
+        "Describe your perfect wine, food or cheese pairing:",
+        placeholder="e.g., a medium-bodied red for steak dinner under $30",
+        value=st.session_state.get('example_query', "a medium-bodied red to go with steak, under $30"),
+        key="wine_query"
+    )
 
-variety_input = st.text_input(
-    "Preferred varieties (optional):",
-    placeholder="e.g., Cabernet Sauvignon, Pinot Noir",
-    value=st.session_state.get('example_variety', ""),
-    help="Leave blank for all varieties, or specify comma-separated grape types",
-    key="variety_input"
-)
+    # Filters in columns for better layout
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        budget_min = st.number_input("Min price ($)", 
+                                    value=st.session_state.get('example_min_price', 0.0), 
+                                    step=5.0, min_value=0.0)
+    with col2:
+        budget_max = st.number_input("Max price ($)", 
+                                    value=st.session_state.get('example_max_price', 50.0), 
+                                    step=5.0, min_value=0.0)
+    with col3:
+        top_k = st.selectbox("Number of recommendations", [3, 5, 8], index=0)
 
-# Recommendation button and results
-search_triggered = st.button("🔍 Find My Wine", type="primary") or st.session_state.get('auto_search', False)
+    variety_input = st.text_input(
+        "Preferred varieties (optional):",
+        placeholder="e.g., Cabernet Sauvignon, Pinot Noir",
+        value=st.session_state.get('example_variety', ""),
+        help="Leave blank for all varieties, or specify comma-separated grape types",
+        key="variety_input"
+    )
+
+    # Recommendation button and results
+    search_triggered = st.button("🔍 Find My Wine", type="primary") or st.session_state.get('auto_search', False)
+
+# Close the input form card
+st.markdown("</div>", unsafe_allow_html=True)
 
 # Clear auto_search flag after using it
 if st.session_state.get('auto_search', False):
@@ -827,6 +896,9 @@ if search_triggered:
                 )
                 
                 # Display recommendations with enhanced formatting
+                st.write("")
+                st.write("")
+                st.write("")
                 st.markdown("## Your Wine Recommendations")
 
                 if not res["candidates"]:
