@@ -429,7 +429,7 @@ st.markdown("""
     }
 
     /* Number input styling */
-    .input#number_input_5 {
+    .stNumberInput input {
         background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, rgba(45, 27, 61, 0.3) 100%) !important;
         border: 2px solid rgba(212, 175, 55, 0.3) !important;
         color: #F4E99B !important;
