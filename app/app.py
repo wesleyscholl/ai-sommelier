@@ -442,7 +442,7 @@ st.markdown("""
     }
     
     /* Selectbox styling */
-    .stSelectbox > div[data-testid="stForm"] {
+    #root > div:nth-child(1) > div.withScreencast > div > div > div.st-emotion-cache-6px8kg.e4man1110 > section > div.stMainBlockContainer.block-container.st-emotion-cache-1w723zb.e4man114 > div > div:nth-child(6) > div > div:nth-child(3) > div > div > div > div > div {
         background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, rgba(45, 27, 61, 0.3) 100%) !important;
         border: 2px solid rgba(212, 175, 55, 0.3) !important;
         color: #F4E99B !important;
