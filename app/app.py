@@ -551,7 +551,7 @@ with st.sidebar:
     st.markdown("---")
     
     # Collapsed configuration section
-    with st.expander("⚙️  Configuration", expanded=False, key="config_expander"):
+    with st.expander("⚙️  Configuration", expanded=False):
         data_path = st.text_input("Wine dataset path", value="data/wine_reviews.csv")
         embed_file = st.text_input("Embeddings cache", value="data/embeddings.npz", 
                                   help="Pre-computed embeddings for faster loading")
@@ -568,7 +568,7 @@ with st.sidebar:
     with st.sidebar:
 
         # About section in collapsible expander
-        with st.expander("ℹ️  About AI Wine Sommelier", expanded=False, key="about_expander"):
+        with st.expander("ℹ️  About AI Wine Sommelier", expanded=False):
             
             st.markdown("""
             **🍷 Features:**
