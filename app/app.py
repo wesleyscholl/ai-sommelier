@@ -4,7 +4,6 @@ import sys
 import time
 import numpy as np
 from pathlib import Path
-import threading
 
 # Add the project root directory to Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -12,17 +11,6 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from src.utils import load_wine_dataset
 from src.recommender import Recommender
 from src.sommelier import Sommelier
-
-# Helper function for delayed toast messages
-def delayed_toast(message, icon, delay_seconds=0):
-    """Show a toast message after a specified delay."""
-    def show_toast():
-        time.sleep(delay_seconds)
-        st.toast(message, icon=icon)
-    
-    thread = threading.Thread(target=show_toast)
-    thread.daemon = True
-    thread.start()
 
 # Country flag emoji mapping
 def get_country_flag(country):
@@ -313,7 +301,7 @@ def build_recommender(data_path: str, embed_file: str = None, batch_size: int = 
         status_text.error(f"❌ Error: {str(e)}")
         raise e
 
-# Initialize recommender system
+    # Initialize recommender system
 try:
     recommender = build_recommender(
         data_path, 
@@ -323,17 +311,15 @@ try:
     )
     sommelier = Sommelier(recommender)
     
-    # Staggered auto-hiding toast notifications (5 seconds each, 1 second apart)
-    st.toast("🎯 AI Sommelier ready!", icon="🎯")  # Shows immediately
-    delayed_toast(f"✅ Dataset loaded: {len(df):,} wines", "✅", 1)  # Shows after 1 second
+    # Simple success toasts without threading
+    st.toast("AI Sommelier ready!", icon="🤵🏻‍♂️")
+    st.toast(f"Dataset loaded: {len(df):,} wines", icon="✅")
     
-    # API status toast (shows after 2 seconds if enabled)
+    # API status toast if enabled
     if os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY"):
-        delayed_toast("🤖 AI explanations enabled", "🤖", 2)  # Shows after 2 seconds
+        st.toast("AI explanations enabled", icon="🤖")
     else:
-        st.info("💡 Set GOOGLE_API_KEY for AI explanations")
-        
-except Exception as e:
+        st.info("💡 Set GOOGLE_API_KEY for AI explanations")except Exception as e:
     st.sidebar.error(f"❌ Initialization failed: {str(e)}")
     st.toast("Sommelier failed to initialize", icon="❌")
     st.error("The AI sommelier could not be initialized. Please check your configuration.")
