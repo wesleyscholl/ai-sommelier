@@ -519,11 +519,6 @@ if search_triggered:
                                 </div>
                                 """
                                 st.markdown(wine_html, unsafe_allow_html=True)
-                                
-                                # Description
-                                if wine.get('description'):
-                                    desc = wine['description'][:150] + "..." if len(wine['description']) > 150 else wine['description']
-                                    st.write(f"*{desc}*")
                         
                         # Right column wine
                         if i + 1 < len(res["candidates"]):
