@@ -266,7 +266,7 @@ st.markdown("""
         text-shadow: 
             0 2px 4px rgba(0,0,0,0.05),
             0 0 10px rgba(212, 175, 55, 0.1);
-        background: linear-gradient(135deg, #D4AF37, #F4E99B);
+        background: linear-gradient(270deg, #D4AF37, #F4E99B);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
