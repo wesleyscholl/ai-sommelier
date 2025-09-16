@@ -120,6 +120,26 @@ st.markdown("""
         padding: 1rem;
         margin: 0.5rem 0;
         border-radius: 8px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        min-height: 280px;
+    }
+    
+    .wine-card-content {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        flex: 1;
+    }
+    
+    .wine-card-description {
+        margin-top: auto;
+        padding-top: 0.5rem;
+        font-style: italic;
+        color: #E2E8F0;
+        line-height: 1.4;
+        font-size: 0.9rem;
     }
     .metric-container {
         background: rgba(45, 27, 61, 0.7);
@@ -130,14 +150,17 @@ st.markdown("""
     
     /* Elegant Sommelier Notes Card */
     .sommelier-card {
-        background: linear-gradient(145deg, #2D1B3D 0%, #45274A 100%);
-        border: 2px solid #D4AF37;
-        border-radius: 16px;
-        padding: 2rem;
-        margin: 2rem 0;
-        box-shadow: 0 8px 32px rgba(212, 175, 55, 0.2);
+        background: linear-gradient(145deg, #2D1B3D 0%, #45274A 50%, #2D1B3D 100%);
+        border: 3px solid #D4AF37;
+        border-radius: 20px;
+        padding: 2.5rem;
+        margin: 3rem 0;
+        box-shadow: 
+            0 10px 40px rgba(212, 175, 55, 0.25),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
         position: relative;
         overflow: hidden;
+        backdrop-filter: blur(10px);
     }
     
     .sommelier-card::before {
@@ -146,69 +169,163 @@ st.markdown("""
         top: 0;
         left: 0;
         right: 0;
-        height: 4px;
-        background: linear-gradient(90deg, #D4AF37, #F4E99B, #D4AF37);
-        animation: shimmer 3s ease-in-out infinite;
+        height: 6px;
+        background: linear-gradient(90deg, 
+            #D4AF37 0%, 
+            #F4E99B 25%, 
+            #D4AF37 50%, 
+            #F4E99B 75%, 
+            #D4AF37 100%);
+        animation: shimmer 4s ease-in-out infinite;
+    }
+    
+    .sommelier-card::after {
+        content: '';
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        border: 1px solid rgba(212, 175, 55, 0.2);
+        border-radius: 15px;
+        pointer-events: none;
     }
     
     @keyframes shimmer {
-        0%, 100% { opacity: 0.5; }
-        50% { opacity: 1; }
+        0%, 100% { 
+            opacity: 0.6;
+            transform: translateX(-100%);
+        }
+        50% { 
+            opacity: 1;
+            transform: translateX(0%);
+        }
     }
     
     .sommelier-header {
         display: flex;
         align-items: center;
-        gap: 1rem;
-        margin-bottom: 1.5rem;
-        padding-bottom: 1rem;
-        border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+        position: relative;
+    }
+    
+    .sommelier-header::after {
+        content: '✦';
+        position: absolute;
+        bottom: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: #D4AF37;
+        font-size: 1rem;
+        background: linear-gradient(145deg, #2D1B3D, #45274A);
+        padding: 0 0.5rem;
     }
     
     .sommelier-avatar {
-        width: 60px;
-        height: 60px;
-        background: linear-gradient(145deg, #D4AF37, #F4E99B);
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(145deg, #D4AF37, #F4E99B, #D4AF37);
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 2rem;
-        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+        font-size: 2.5rem;
+        box-shadow: 
+            0 8px 25px rgba(212, 175, 55, 0.4),
+            inset 0 2px 4px rgba(255, 255, 255, 0.2);
+        border: 3px solid rgba(255, 255, 255, 0.1);
+        position: relative;
+    }
+    
+    .sommelier-avatar::before {
+        content: '';
+        position: absolute;
+        top: -3px;
+        left: -3px;
+        right: -3px;
+        bottom: -3px;
+        border-radius: 50%;
+        background: linear-gradient(45deg, #D4AF37, transparent, #D4AF37);
+        z-index: -1;
+        animation: rotate 6s linear infinite;
+    }
+    
+    @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
     }
     
     .sommelier-title {
         color: #D4AF37;
-        font-size: 1.8rem;
+        font-size: 2.2rem;
         font-weight: bold;
         margin: 0;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        text-shadow: 
+            0 2px 4px rgba(0,0,0,0.5),
+            0 0 10px rgba(212, 175, 55, 0.3);
+        background: linear-gradient(135deg, #D4AF37, #F4E99B);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
     }
     
     .sommelier-subtitle {
         color: #E2E8F0;
-        font-size: 1rem;
-        margin: 0;
-        opacity: 0.8;
+        font-size: 1.1rem;
+        margin: 0.3rem 0 0 0;
+        opacity: 0.9;
         font-style: italic;
+        font-weight: 300;
+        letter-spacing: 0.5px;
     }
     
     .sommelier-content {
         color: #F7FAFC;
-        line-height: 1.7;
-        font-size: 1.05rem;
+        line-height: 1.8;
+        font-size: 1.1rem;
         text-align: justify;
+        position: relative;
     }
     
     .sommelier-quote {
-        border-left: 4px solid #D4AF37;
-        padding-left: 1rem;
-        margin: 1rem 0;
+        border-left: 6px solid #D4AF37;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
         font-style: italic;
-        color: #E2E8F0;
-        background: rgba(212, 175, 55, 0.05);
-        padding: 1rem;
-        border-radius: 0 8px 8px 0;
+        color: #F0F4F8;
+        background: linear-gradient(135deg, 
+            rgba(212, 175, 55, 0.08) 0%, 
+            rgba(212, 175, 55, 0.03) 100%);
+        border-radius: 0 12px 12px 0;
+        position: relative;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+    
+    .sommelier-quote::before {
+        content: '"';
+        position: absolute;
+        top: -10px;
+        left: 10px;
+        font-size: 4rem;
+        color: #D4AF37;
+        opacity: 0.3;
+        font-family: serif;
+        line-height: 1;
+    }
+    
+    .sommelier-quote::after {
+        content: '"';
+        position: absolute;
+        bottom: -20px;
+        right: 20px;
+        font-size: 4rem;
+        color: #D4AF37;
+        opacity: 0.3;
+        font-family: serif;
+        line-height: 1;
     }
     
     /* Custom toast styling to match wine theme */
@@ -494,7 +611,7 @@ if search_triggered:
                                 # Wine card with image placeholder
                                 wine_html = f"""
                                 <div class="wine-card">
-                                    <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                                    <div class="wine-card-content">
                                         <div style="flex-shrink: 0;">
                                             <div style="width: 80px; height: 120px; background: linear-gradient(145deg, #4a5568, #2d3748); 
                                                         border-radius: 8px; display: flex; align-items: center; justify-content: center; 
@@ -513,8 +630,10 @@ if search_triggered:
                                                     🎯 {wine.get('similarity', 0):.1%} match
                                                 </span>
                                             </div>
-                                            {wine.get('description', '') if wine.get('description') else ''}
                                         </div>
+                                    </div>
+                                    <div class="wine-card-description">
+                                        {wine.get('description', '')[:150] + '...' if wine.get('description') and len(wine.get('description', '')) > 150 else wine.get('description', '')}
                                     </div>
                                 </div>
                                 """
@@ -530,7 +649,7 @@ if search_triggered:
                                 # Wine card with image placeholder
                                 wine_html = f"""
                                 <div class="wine-card">
-                                    <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                                    <div class="wine-card-content">
                                         <div style="flex-shrink: 0;">
                                             <div style="width: 80px; height: 120px; background: linear-gradient(145deg, #4a5568, #2d3748); 
                                                         border-radius: 8px; display: flex; align-items: center; justify-content: center; 
@@ -549,8 +668,10 @@ if search_triggered:
                                                     🎯 {wine.get('similarity', 0):.1%} match
                                                 </span>
                                             </div>
-                                            {wine.get('description', '') if wine.get('description') else ''}
                                         </div>
+                                    </div>
+                                    <div class="wine-card-description">
+                                        {wine.get('description', '')[:150] + '...' if wine.get('description') and len(wine.get('description', '')) > 150 else wine.get('description', '')}
                                     </div>
                                 </div>
                                 """
