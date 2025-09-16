@@ -395,7 +395,7 @@ st.markdown("""
         background: linear-gradient(145deg, #F4E99B 0%, #D4AF37 50%, #F4E99B 100%) !important;
         box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6) !important;
         transform: translateY(-2px) !important;
-        color: #FFFFFF !important;
+        color: #000000 !important;
     }
     
     /* Secondary/example buttons styling */
