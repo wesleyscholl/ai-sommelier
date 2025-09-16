@@ -427,16 +427,16 @@ st.markdown("""
         box-shadow: 0 0 10px rgba(212, 175, 55, 0.4) !important;
         background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(45, 27, 61, 0.2) 100%) !important;
     }
-    
+
     /* Number input styling */
-    .stNumberInput > div > div > input {
+    .input[type="number"] {
         background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, rgba(45, 27, 61, 0.3) 100%) !important;
         border: 2px solid rgba(212, 175, 55, 0.3) !important;
         color: #F4E99B !important;
         border-radius: 8px !important;
     }
     
-    .stNumberInput > div > div > input:focus {
+    .input[type="number"]:focus {
         border: 2px solid #D4AF37 !important;
         box-shadow: 0 0 8px rgba(212, 175, 55, 0.4) !important;
     }
