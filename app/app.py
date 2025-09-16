@@ -436,7 +436,7 @@ st.markdown("""
         border-radius: 8px !important;
     }
     
-    .stNumberInput input {
+    .stNumberInput input:focus {
         border: 2px solid #D4AF37 !important;
         box-shadow: 0 0 8px rgba(212, 175, 55, 0.4) !important;
     }
@@ -467,33 +467,6 @@ st.markdown("""
     .streamlit-expanderHeader:hover {
         background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(45, 27, 61, 0.3) 100%) !important;
         border: 1px solid #D4AF37 !important;
-    }
-    
-    /* Specific styling for Configuration section */
-    .streamlit-expanderHeader p:contains("⚙️") {
-        background: linear-gradient(135deg, rgba(212, 175, 55, 0.08) 0%, rgba(45, 27, 61, 0.15) 100%) !important;
-        border: 1px solid rgba(212, 175, 55, 0.25) !important;
-    }
-    
-    /* Specific styling for About section */
-    .streamlit-expanderHeader p:contains("ℹ️") {
-        background: linear-gradient(135deg, rgba(212, 175, 55, 0.08) 0%, rgba(45, 27, 61, 0.15) 100%) !important;
-        border: 1px solid rgba(212, 175, 55, 0.25) !important;
-    }
-    
-    /* Enhanced expander content styling for these sections */
-    .streamlit-expanderContent {
-        background: linear-gradient(135deg, rgba(212, 175, 55, 0.02) 0%, rgba(45, 27, 61, 0.05) 100%) !important;
-        border-left: 2px solid rgba(212, 175, 55, 0.2) !important;
-        border-right: 2px solid rgba(212, 175, 55, 0.2) !important;
-        border-bottom: 2px solid rgba(212, 175, 55, 0.2) !important;
-        border-radius: 0 0 8px 8px !important;
-        padding: 1rem !important;
-    }
-    
-    /* Subtle glow effect for expander icons */
-    .streamlit-expanderHeader svg {
-        filter: drop-shadow(0 0 3px rgba(212, 175, 55, 0.3)) !important;
     }
     
     /* Sidebar separator styling */
@@ -536,6 +509,17 @@ st.markdown("""
     .stSlider > div > div > div {
         background: rgba(212, 175, 55, 0.3) !important;
     }
+
+    .st-key-config-expander {
+        background: rgba(45, 27, 61, 0.6) !important;
+        border: 1px solid rgba(212, 175, 55, 0.3) !important;
+        border-radius: 8px !important;
+    }
+    .st-key-about-expander {
+        background: rgba(45, 27, 61, 0.6) !important;
+        border: 1px solid rgba(212, 175, 55, 0.3) !important;
+        border-radius: 8px !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -567,7 +551,7 @@ with st.sidebar:
     st.markdown("---")
     
     # Collapsed configuration section
-    with st.expander("⚙️  Configuration", expanded=False):
+    with st.expander("⚙️  Configuration", expanded=False, key="config_expander"):
         data_path = st.text_input("Wine dataset path", value="data/wine_reviews.csv")
         embed_file = st.text_input("Embeddings cache", value="data/embeddings.npz", 
                                   help="Pre-computed embeddings for faster loading")
@@ -584,7 +568,7 @@ with st.sidebar:
     with st.sidebar:
 
         # About section in collapsible expander
-        with st.expander("ℹ️  About AI Wine Sommelier", expanded=False):
+        with st.expander("ℹ️  About AI Wine Sommelier", expanded=False, key="about_expander"):
             
             st.markdown("""
             **🍷 Features:**
