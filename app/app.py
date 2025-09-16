@@ -518,7 +518,7 @@ try:
     
     # Simple success toasts without threading
     st.toast("AI Sommelier ready!", icon="🤵🏻‍♂️", duration="short")
-    st.toast(f"Dataset loaded: {len(df):,} wines", icon="✅", duration="short")
+    st.toast(f"Dataset loaded: {len(df):,} wines", icon="✅", duration=7)
 
     # API status toast if enabled
     if os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY"):
