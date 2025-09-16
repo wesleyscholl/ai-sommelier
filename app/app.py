@@ -639,7 +639,7 @@ if search_triggered:
                                         </div>
                                     </div>
                                     <div class="wine-card-description">
-                                        {wine.get('description', '')[:150] + '...' if wine.get('description') and len(wine.get('description', '')) > 150 else wine.get('description', '')}
+                                        {wine.get('description', '')}
                                     </div>
                                 </div>
                                 """
@@ -677,7 +677,7 @@ if search_triggered:
                                         </div>
                                     </div>
                                     <div class="wine-card-description">
-                                        {wine.get('description', '')[:150] + '...' if wine.get('description') and len(wine.get('description', '')) > 150 else wine.get('description', '')}
+                                        {wine.get('description', '')}
                                     </div>
                                 </div>
                                 """
