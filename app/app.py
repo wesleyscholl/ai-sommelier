@@ -452,7 +452,7 @@ st.markdown("""
         box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6) !important;
         transform: translateY(-2px) !important;
         color: #000000 !important;
-        transform: scale(1.1) !important;
+        transform: scale(1.05) !important;
     }
     
     /* Secondary/example buttons styling */
@@ -675,6 +675,17 @@ with st.sidebar:
             - Mention food pairings
             - Include price preferences  
             - Try different varieties
+
+            **🔒 Privacy:**
+            - We do not store any personal data
+            - All interactions are anonymous
+            - You can reset the chat at any time
+            - No account or login required
+
+            **👨🏻‍💻 Created by:**
+            *Wesley Scholl*
+            - [GitHub](https://github.com/wesleyscholl/ai-sommelier)
+            - [LinkedIn](https://www.linkedin.com/in/wesleyscholl/)
             """)
 
 # Initialize data loading with error handling
