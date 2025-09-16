@@ -147,20 +147,20 @@ st.markdown("""
         padding: 1rem;
         margin: 0.5rem 0;
         border-radius: 8px;
-        height: 100%;
         display: flex;
         flex-direction: column;
-        min-height: 325px;
+        min-height: 200px;
+        width: 100%;
+        box-sizing: border-box;
     }
     
-    /* Ensure equal height cards in each row */
+    /* Remove column-specific styling since we're using single column */
     .stColumn {
         display: flex !important;
         flex-direction: column !important;
     }
     
     .stColumn > div {
-        height: 100% !important;
         display: flex !important;
         flex-direction: column !important;
     }
@@ -833,88 +833,44 @@ if search_triggered:
                     st.warning("No wines found matching your criteria. Try adjusting your filters or description.")
                     st.info("💡 **Tips:** Try broader terms, remove variety filters, or increase price range")
                 else:
-                    # Display wines in 2 columns
-                    for i in range(0, len(res["candidates"]), 2):
-                        col_left, col_right = st.columns(2, gap="medium")
+                    # Display wines in single full-width column
+                    for i, wine in enumerate(res["candidates"]):
+                        country = wine.get('country', 'Unknown')
+                        flag = get_country_flag(country)
                         
-                        # Left column wine
-                        if i < len(res["candidates"]):
-                            wine = res["candidates"][i]
-                            with col_left:
-                                country = wine.get('country', 'Unknown')
-                                flag = get_country_flag(country)
-                                
-                                # Wine card with image placeholder
-                                wine_html = f"""
-                                <div class="wine-card">
-                                    <div class="wine-card-content">
-                                        <div style="flex-shrink: 0;">
-                                            <div style="width: 80px; height: 120px; background: linear-gradient(145deg, #4a5568, #2d3748); 
-                                                        border-radius: 8px; display: flex; align-items: center; justify-content: center; 
-                                                        border: 2px solid #D4AF37; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">
-                                                <span style="font-size: 2rem;">🍷</span>
-                                            </div>
-                                        </div>
-                                        <div style="flex: 1; min-width: 0;">
-                                            <h4 style="margin: 0 0 0.5rem 0; color: #D4AF37;">{i+1}. {wine['title']}</h4>
-                                            <p style="margin: 0 0 0.5rem 0; font-weight: bold;">{wine['variety']} from {country} {flag}</p>
-                                            <div style="display: flex; gap: 1rem; margin-bottom: 0.5rem;">
-                                                <span style="background: rgba(45, 27, 61, 0.7); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.9rem;">
-                                                    💰 ${wine.get('price', '?') if wine.get('price') else 'N/A'}
-                                                </span>
-                                                <span style="background: rgba(45, 27, 61, 0.7); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.9rem;">
-                                                    🎯 {wine.get('similarity', 0):.1%} match
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="wine-card-description">
-                                        {wine.get('description', '')}
+                        # Wine card with full width
+                        wine_html = f"""
+                        <div class="wine-card">
+                            <div class="wine-card-content">
+                                <div style="flex-shrink: 0;">
+                                    <div style="width: 80px; height: 120px; background: linear-gradient(145deg, #4a5568, #2d3748); 
+                                                border-radius: 8px; display: flex; align-items: center; justify-content: center; 
+                                                border: 2px solid #D4AF37; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">
+                                        <span style="font-size: 2rem;">🍷</span>
                                     </div>
                                 </div>
-                                """
-                                st.markdown(wine_html, unsafe_allow_html=True)
-                        
-                        # Right column wine
-                        if i + 1 < len(res["candidates"]):
-                            wine = res["candidates"][i + 1]
-                            with col_right:
-                                country = wine.get('country', 'Unknown')
-                                flag = get_country_flag(country)
-                                
-                                # Wine card with image placeholder
-                                wine_html = f"""
-                                <div class="wine-card">
-                                    <div class="wine-card-content">
-                                        <div style="flex-shrink: 0;">
-                                            <div style="width: 80px; height: 120px; background: linear-gradient(145deg, #4a5568, #2d3748); 
-                                                        border-radius: 8px; display: flex; align-items: center; justify-content: center; 
-                                                        border: 2px solid #D4AF37; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">
-                                                <span style="font-size: 2rem;">🍷</span>
-                                            </div>
-                                        </div>
-                                        <div style="flex: 1; min-width: 0;">
-                                            <h4 style="margin: 0 0 0.5rem 0; color: #D4AF37;">{i+2}. {wine['title']}</h4>
-                                            <p style="margin: 0 0 0.5rem 0; font-weight: bold;">{wine['variety']} from {country} {flag}</p>
-                                            <div style="display: flex; gap: 1rem; margin-bottom: 0.5rem;">
-                                                <span style="background: rgba(45, 27, 61, 0.7); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.9rem;">
-                                                    💰 ${wine.get('price', '?') if wine.get('price') else 'N/A'}
-                                                </span>
-                                                <span style="background: rgba(45, 27, 61, 0.7); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.9rem;">
-                                                    🎯 {wine.get('similarity', 0):.1%} match
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="wine-card-description">
-                                        {wine.get('description', '')}
+                                <div style="flex: 1; min-width: 0;">
+                                    <h4 style="margin: 0 0 0.5rem 0; color: #D4AF37;">{i+1}. {wine['title']}</h4>
+                                    <p style="margin: 0 0 0.5rem 0; font-weight: bold;">{wine['variety']} from {country} {flag}</p>
+                                    <div style="display: flex; gap: 1rem; margin-bottom: 0.5rem;">
+                                        <span style="background: rgba(45, 27, 61, 0.7); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.9rem;">
+                                            💰 ${wine.get('price', '?') if wine.get('price') else 'N/A'}
+                                        </span>
+                                        <span style="background: rgba(45, 27, 61, 0.7); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.9rem;">
+                                            🎯 {wine.get('similarity', 0):.1%} match
+                                        </span>
                                     </div>
                                 </div>
-                                """
-                                st.markdown(wine_html, unsafe_allow_html=True)
+                            </div>
+                            <div class="wine-card-description">
+                                {wine.get('description', '')}
+                            </div>
+                        </div>
+                        """
+                        st.markdown(wine_html, unsafe_allow_html=True)
                         
-                        # Add spacing between rows
-                        st.markdown("<br>", unsafe_allow_html=True)
+                        # Add spacing between cards
+                        st.markdown("<div style='margin: 1rem 0;'></div>", unsafe_allow_html=True)
                 
                 # Sommelier explanation with elegant styling
                 if res["explanation"]:
