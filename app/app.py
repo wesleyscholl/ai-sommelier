@@ -108,29 +108,6 @@ class ProductionRecommender(Recommender):
 st.title("🤵🏻‍♂️🍷 AI Wine Sommelier")
 st.markdown("*Find your perfect wine with AI-powered recommendations*")
 
-# Add fancy header container
-st.markdown("""
-<div style="background: linear-gradient(135deg, rgba(45, 27, 61, 0.8), rgba(69, 39, 74, 0.6)); 
-            border: 2px solid #D4AF37; border-radius: 15px; padding: 1rem; margin-bottom: 2rem; 
-            box-shadow: 0 8px 32px rgba(212, 175, 55, 0.2); text-align: center; position: relative; overflow: hidden;">
-    <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; 
-                background: linear-gradient(90deg, #D4AF37, #F4E99B, #D4AF37); 
-                animation: headerShimmer 3s ease-in-out infinite;"></div>
-    <h3 style="color: #D4AF37; margin: 0; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
-        🍷 Welcome to Your Personal Wine Sommelier 🍷
-    </h3>
-    <p style="color: #E2E8F0; margin: 0.5rem 0 0 0; font-style: italic;">
-        Discover exceptional wines tailored to your taste and occasion
-    </p>
-</div>
-<style>
-@keyframes headerShimmer {
-    0%, 100% { opacity: 0.6; }
-    50% { opacity: 1; }
-}
-</style>
-""", unsafe_allow_html=True)
-
 # Add custom CSS for dark wine theme and toast styling
 st.markdown("""
 <style>
@@ -169,65 +146,6 @@ st.markdown("""
         padding: 0.5rem;
         border-radius: 6px;
         margin: 0.2rem;
-    }
-    
-    /* Enhanced Input Styling */
-    .stTextInput > div > div > input {
-        background: linear-gradient(145deg, rgba(212, 175, 55, 0.1), rgba(212, 175, 55, 0.05)) !important;
-        border: 2px solid #D4AF37 !important;
-        border-radius: 8px !important;
-        color: #F7FAFC !important;
-        font-size: 1rem !important;
-        padding: 0.75rem !important;
-        box-shadow: 0 2px 8px rgba(212, 175, 55, 0.2) !important;
-    }
-    
-    .stTextInput > div > div > input:focus {
-        border-color: #F4E99B !important;
-        box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.3) !important;
-    }
-    
-    .stNumberInput > div > div > input {
-        background: linear-gradient(145deg, rgba(212, 175, 55, 0.1), rgba(212, 175, 55, 0.05)) !important;
-        border: 2px solid #D4AF37 !important;
-        border-radius: 8px !important;
-        color: #F7FAFC !important;
-        font-size: 1rem !important;
-    }
-    
-    .stSelectbox > div > div > div {
-        background: linear-gradient(145deg, rgba(212, 175, 55, 0.1), rgba(212, 175, 55, 0.05)) !important;
-        border: 2px solid #D4AF37 !important;
-        border-radius: 8px !important;
-        color: #F7FAFC !important;
-    }
-    
-    /* Enhanced Button Styling */
-    .stButton > button {
-        background: linear-gradient(145deg, #D4AF37, #F4E99B) !important;
-        border: 2px solid #B8941F !important;
-        border-radius: 10px !important;
-        color: #2D1B3D !important;
-        font-weight: bold !important;
-        font-size: 1.1rem !important;
-        padding: 0.75rem 2rem !important;
-        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3) !important;
-        transition: all 0.3s ease !important;
-    }
-    
-    .stButton > button:hover {
-        background: linear-gradient(145deg, #F4E99B, #D4AF37) !important;
-        transform: translateY(-2px) !important;
-        box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4) !important;
-    }
-    
-    /* Section Separators */
-    .section-separator {
-        height: 3px;
-        background: linear-gradient(90deg, transparent, #D4AF37, transparent);
-        margin: 3rem 0;
-        border-radius: 2px;
-        opacity: 0.6;
     }
     
     /* Elegant Sommelier Notes Card */
@@ -598,20 +516,14 @@ try:
     )
     sommelier = Sommelier(recommender)
     
-    # Show toasts only on first load
-    if 'toasts_shown' not in st.session_state:
-        st.session_state['toasts_shown'] = True
-        
-        # Simple success toasts without threading
-        st.toast("AI Sommelier ready!", icon="🤵🏻‍♂️")
-        st.toast(f"Dataset loaded: {len(df):,} wines", icon="✅")
-        
-        # API status toast if enabled
-        if os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY"):
-            st.toast("AI explanations enabled", icon="🤖")
-    
-    # Always show API info message if no key
-    if not (os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY")):
+    # Simple success toasts without threading
+    st.toast("AI Sommelier ready!", icon="🤵🏻‍♂️", duration="short")
+    st.toast(f"Dataset loaded: {len(df):,} wines", icon="✅", duration="short")
+
+    # API status toast if enabled
+    if os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY"):
+        st.toast("AI explanations enabled", icon="🤖", duration="long")
+    else:
         st.info("💡 Set GOOGLE_API_KEY for AI explanations")
         
 except Exception as e:
@@ -621,16 +533,6 @@ except Exception as e:
     st.stop()
 
 # User input with better UX
-st.markdown("""
-<div style="background: linear-gradient(135deg, rgba(45, 27, 61, 0.6), rgba(69, 39, 74, 0.4)); 
-            border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 12px; padding: 1.5rem; 
-            margin: 1.5rem 0; box-shadow: 0 4px 20px rgba(212, 175, 55, 0.1);">
-    <h4 style="color: #D4AF37; margin: 0 0 1rem 0; text-align: center;">
-        🍇 Describe Your Perfect Wine Experience
-    </h4>
-</div>
-""", unsafe_allow_html=True)
-
 user_text = st.text_input(
     "Describe your perfect wine or food pairing:",
     placeholder="e.g., a medium-bodied red for steak dinner under $30",
@@ -687,12 +589,6 @@ if search_triggered:
                     price_max=price_max,
                     variety=variety_list,
                 )
-                
-                # Add section separator before recommendations
-                st.markdown("""
-                <div style="height: 3px; background: linear-gradient(90deg, transparent, #D4AF37, transparent); 
-                            margin: 3rem 0; border-radius: 2px; opacity: 0.6;"></div>
-                """, unsafe_allow_html=True)
                 
                 # Display recommendations with enhanced formatting
                 st.markdown("## 🎯 Your Wine Recommendations")
