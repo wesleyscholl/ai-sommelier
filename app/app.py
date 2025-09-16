@@ -33,7 +33,7 @@ def get_country_flag(country):
 st.set_page_config(
     page_title="AI Wine Sommelier",
     page_icon="🍷",
-    layout="centered",
+    layout="wide",
     initial_sidebar_state="expanded"
 )
 
