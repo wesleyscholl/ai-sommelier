@@ -123,7 +123,7 @@ st.markdown("""
         height: 100%;
         display: flex;
         flex-direction: column;
-        min-height: 280px;
+        min-height: 400px;
     }
     
     /* Ensure equal height cards in each row */
