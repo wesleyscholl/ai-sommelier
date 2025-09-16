@@ -436,7 +436,7 @@ st.markdown("""
         border-radius: 8px !important;
     }
     
-    .input[type="number"]:focus {
+    .stNumberInput input:focus {
         border: 2px solid #D4AF37 !important;
         box-shadow: 0 0 8px rgba(212, 175, 55, 0.4) !important;
     }
