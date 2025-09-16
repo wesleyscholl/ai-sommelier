@@ -259,7 +259,7 @@ st.markdown("""
     }
     
     .sommelier-title {
-        color: #F4E99B;
+        color: #F4E99B !important;
         font-size: 2.2rem;
         font-weight: bold;
         margin: 0;
