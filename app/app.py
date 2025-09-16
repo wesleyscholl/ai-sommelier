@@ -517,12 +517,12 @@ try:
     sommelier = Sommelier(recommender)
     
     # Simple success toasts without threading
-    st.toast("AI Sommelier ready!", icon="🤵🏻‍♂️")
-    st.toast(f"Dataset loaded: {len(df):,} wines", icon="✅")
-    
+    st.toast("AI Sommelier ready!", icon="🤵🏻‍♂️", duration="short")
+    st.toast(f"Dataset loaded: {len(df):,} wines", icon="✅", duration="short")
+
     # API status toast if enabled
     if os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY"):
-        st.toast("AI explanations enabled", icon="🤖")
+        st.toast("AI explanations enabled", icon="🤖", duration="long")
     else:
         st.info("💡 Set GOOGLE_API_KEY for AI explanations")
         
