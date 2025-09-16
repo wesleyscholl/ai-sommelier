@@ -436,7 +436,7 @@ st.markdown("""
         border-radius: 8px !important;
     }
     
-    .stNumberInput input:focus {
+    .stNumberInput input {
         border: 2px solid #D4AF37 !important;
         box-shadow: 0 0 8px rgba(212, 175, 55, 0.4) !important;
     }
@@ -467,6 +467,33 @@ st.markdown("""
     .streamlit-expanderHeader:hover {
         background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(45, 27, 61, 0.3) 100%) !important;
         border: 1px solid #D4AF37 !important;
+    }
+    
+    /* Specific styling for Configuration section */
+    .streamlit-expanderHeader p:contains("⚙️") {
+        background: linear-gradient(135deg, rgba(212, 175, 55, 0.08) 0%, rgba(45, 27, 61, 0.15) 100%) !important;
+        border: 1px solid rgba(212, 175, 55, 0.25) !important;
+    }
+    
+    /* Specific styling for About section */
+    .streamlit-expanderHeader p:contains("ℹ️") {
+        background: linear-gradient(135deg, rgba(212, 175, 55, 0.08) 0%, rgba(45, 27, 61, 0.15) 100%) !important;
+        border: 1px solid rgba(212, 175, 55, 0.25) !important;
+    }
+    
+    /* Enhanced expander content styling for these sections */
+    .streamlit-expanderContent {
+        background: linear-gradient(135deg, rgba(212, 175, 55, 0.02) 0%, rgba(45, 27, 61, 0.05) 100%) !important;
+        border-left: 2px solid rgba(212, 175, 55, 0.2) !important;
+        border-right: 2px solid rgba(212, 175, 55, 0.2) !important;
+        border-bottom: 2px solid rgba(212, 175, 55, 0.2) !important;
+        border-radius: 0 0 8px 8px !important;
+        padding: 1rem !important;
+    }
+    
+    /* Subtle glow effect for expander icons */
+    .streamlit-expanderHeader svg {
+        filter: drop-shadow(0 0 3px rgba(212, 175, 55, 0.3)) !important;
     }
     
     /* Sidebar separator styling */
@@ -521,14 +548,14 @@ with st.sidebar:
     # Quick examples (keep visible)
     st.markdown("**✨ Quick Examples:**")
     examples = [
-        {"text": "Bold red for BBQ under $25", "min_price": 0.0, "max_price": 25.0, "variety": ""},
-        {"text": "Crisp white for seafood", "min_price": 0.0, "max_price": 50.0, "variety": "Sauvignon Blanc, Pinot Grigio"}, 
-        {"text": "Elegant wine for special dinner", "min_price": 30.0, "max_price": 100.0, "variety": ""},
-        {"text": "Sweet wine for dessert", "min_price": 0.0, "max_price": 40.0, "variety": "Riesling, Port"}
+        {"text": "🍗 Bold red for BBQ under $25", "min_price": 0.0, "max_price": 25.0, "variety": ""},
+        {"text": "🐠 Crisp white for seafood", "min_price": 0.0, "max_price": 50.0, "variety": "Sauvignon Blanc, Pinot Grigio"}, 
+        {"text": "🍾 Elegant wine for special dinner", "min_price": 30.0, "max_price": 100.0, "variety": ""},
+        {"text": "🍰 Sweet wine for dessert", "min_price": 0.0, "max_price": 40.0, "variety": "Riesling, Port"}
     ]
     
     for i, example in enumerate(examples):
-        if st.button(f"🍷 {example['text']}", key=f"example_{i}", use_container_width=True):
+        if st.button(f"{example['text']}", key=f"example_{i}", use_container_width=True):
             # Set all form values and trigger auto-search
             st.session_state['example_query'] = example['text']
             st.session_state['auto_search'] = True
