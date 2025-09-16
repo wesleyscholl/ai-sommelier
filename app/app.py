@@ -396,6 +396,7 @@ st.markdown("""
         box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6) !important;
         transform: translateY(-2px) !important;
         color: #000000 !important;
+        transform: scale(1.15) !important;
     }
     
     /* Secondary/example buttons styling */
