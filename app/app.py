@@ -807,48 +807,48 @@ except Exception as e:
     st.error("The AI sommelier could not be initialized. Please check your configuration.")
     st.stop()
 
-# User input with better UX wrapped in elegant card
-st.markdown("""
-<div class="input-form-card">
-    <div class="form-header">
-        <h3>🍷 Find Your Perfect Wine</h3>
-        <p>Tell us what you're looking for and we'll find the perfect match</p>
-    </div>
-""", unsafe_allow_html=True)
+with st.container():
+    # User input with better UX wrapped in elegant card
+    st.markdown("""
+    <div class="input-form-card">
+        <div class="form-header">
+            <h3>🍷 Find Your Perfect Wine</h3>
+            <p>Tell us what you're looking for and we'll find the perfect match</p>
+        </div>
+    """, unsafe_allow_html=True)
+    user_text = st.text_input(
+        "Describe your perfect wine, food or cheese pairing:",
+        placeholder="e.g., a medium-bodied red for steak dinner under $30",
+        value=st.session_state.get('example_query', "a medium-bodied red to go with steak, under $30"),
+        key="wine_query"
+    )
 
-user_text = st.text_input(
-    "Describe your perfect wine, food or cheese pairing:",
-    placeholder="e.g., a medium-bodied red for steak dinner under $30",
-    value=st.session_state.get('example_query', "a medium-bodied red to go with steak, under $30"),
-    key="wine_query"
-)
+    # Filters in columns for better layout
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        budget_min = st.number_input("Min price ($)", 
+                                    value=st.session_state.get('example_min_price', 0.0), 
+                                    step=5.0, min_value=0.0)
+    with col2:
+        budget_max = st.number_input("Max price ($)", 
+                                    value=st.session_state.get('example_max_price', 50.0), 
+                                    step=5.0, min_value=0.0)
+    with col3:
+        top_k = st.selectbox("Number of recommendations", [3, 5, 8], index=0)
 
-# Filters in columns for better layout
-col1, col2, col3 = st.columns(3)
-with col1:
-    budget_min = st.number_input("Min price ($)", 
-                                value=st.session_state.get('example_min_price', 0.0), 
-                                step=5.0, min_value=0.0)
-with col2:
-    budget_max = st.number_input("Max price ($)", 
-                                value=st.session_state.get('example_max_price', 50.0), 
-                                step=5.0, min_value=0.0)
-with col3:
-    top_k = st.selectbox("Number of recommendations", [3, 5, 8], index=0)
+    variety_input = st.text_input(
+        "Preferred varieties (optional):",
+        placeholder="e.g., Cabernet Sauvignon, Pinot Noir",
+        value=st.session_state.get('example_variety', ""),
+        help="Leave blank for all varieties, or specify comma-separated grape types",
+        key="variety_input"
+    )
 
-variety_input = st.text_input(
-    "Preferred varieties (optional):",
-    placeholder="e.g., Cabernet Sauvignon, Pinot Noir",
-    value=st.session_state.get('example_variety', ""),
-    help="Leave blank for all varieties, or specify comma-separated grape types",
-    key="variety_input"
-)
+    # Recommendation button and results
+    search_triggered = st.button("🔍 Find My Wine", type="primary") or st.session_state.get('auto_search', False)
 
-# Recommendation button and results
-search_triggered = st.button("🔍 Find My Wine", type="primary") or st.session_state.get('auto_search', False)
-
-# Close the input form card
-st.markdown("</div>", unsafe_allow_html=True)
+    # Close the input form card
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # Clear auto_search flag after using it
 if st.session_state.get('auto_search', False):
