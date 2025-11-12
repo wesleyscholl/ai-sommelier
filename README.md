@@ -1,5 +1,7 @@
 # AI Wine Sommelier 🤵🏻‍♂️🍷
 
+**Status**: Production-ready wine recommendation engine with ML-powered taste profiling and inventory management integration.
+
 An AI-powered wine recommendation system that helps customers find the perfect bottle based on taste preferences, grape varietals, food and cheese pairings, or mood.
 
 #### Find Your Wine
